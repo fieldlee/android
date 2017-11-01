@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <cn.com.yqhome.instrumentapp.DropDown.DropDownMenu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/dropDownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:dividerColor="@color/bpWhite"
+        app:maskColor="@color/mask_color"
+        app:menuBackgroundColor="@color/base_title_color"
+        app:menuSelectedIcon="@drawable/ic_img_up"
+        app:menuTextSize="16sp"
+        app:menuUnselectedIcon="@drawable/ic_img_down"
+        app:textSelectedColor="@color/blue_app"
+        app:textUnselectedColor="@color/drop_down_unselected"
+        app:underlineColor="@color/blue_app" />
+</LinearLayout>

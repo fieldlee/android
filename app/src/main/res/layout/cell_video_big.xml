@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_marginTop="10dp"
+
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/cell_video_big_title"
+            android:layout_width="match_parent"
+            android:textSize="@dimen/news_title"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:scaleType="centerCrop"
+            android:id="@+id/cell_video_big_imageView"
+            android:layout_width="match_parent"
+            android:layout_height="215dp" />
+
+        <ImageView
+            android:scaleType="fitXY"
+            android:id="@+id/cell_video_big_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+
+        <LinearLayout
+            android:background="@drawable/corner_shape"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_width="50dp"
+            android:layout_height="20dp">
+            <TextView
+                android:gravity="center"
+                android:textSize="@dimen/news_subtitle"
+                android:textColor="@color/white"
+                android:id="@+id/cell_video_big_time"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:gravity="center_vertical"
+            android:id="@+id/cell_video_big_avator"
+            android:scaleType="fitCenter"
+            android:layout_width="30dp"
+            app:riv_corner_radius="15dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/cell_video_big_subtitle"
+            android:layout_width="match_parent"
+            android:textSize="@dimen/news_subtitle"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

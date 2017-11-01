@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:id="@+id/learncontext_fragment_refresh"
+        android:layout_height="match_parent">
+        <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+            android:id="@+id/learncontext_recycleView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="0dp"
+            android:paddingTop="2dp"
+            app:shimmer_demo_child_count="10"
+            app:shimmer_demo_layout="@layout/recycle_list_small_placeholder"
+            app:shimmer_demo_shimmer_color="#73ffffff"
+            >
+        </com.cooltechworks.views.shimmer.ShimmerRecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

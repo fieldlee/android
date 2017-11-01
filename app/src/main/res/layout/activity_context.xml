@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/content_parent"
+    tools:context="cn.com.yqhome.instrumentapp.MainActivity">
+
+    <ListView
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintTop_toTopOf="@+id/content_parent"
+        app:layout_constraintLeft_toLeftOf="@+id/content_parent"
+        app:layout_constraintRight_toRightOf="@+id/content_parent"
+        app:layout_constraintBottom_toTopOf="@+id/content_reply_bar"
+        android:divider="@color/white"
+        android:dividerHeight="0dp"
+        android:id="@+id/content_listView"
+        android:layout_width="0dp"
+        android:layout_height="0dp">
+    </ListView>
+
+
+    <LinearLayout
+
+        app:layout_constraintTop_toBottomOf="@+id/content_listView"
+        app:layout_constraintLeft_toLeftOf="@+id/content_parent"
+        app:layout_constraintRight_toRightOf="@+id/content_parent"
+        app:layout_constraintBottom_toBottomOf="@+id/content_parent"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginLeft="0dp"
+        android:orientation="horizontal"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:id="@+id/content_reply_bar">
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="@dimen/news_subtitle"
+            android:hint=" 说些什么吧..."
+            android:background="@drawable/comment_bg_line"
+            android:id="@+id/content_palyer_text"
+            android:gravity="center_vertical"
+            android:layout_weight="9"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp" />
+
+        <ImageButton
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:id="@+id/content_palyer_collection"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:id="@+id/content_palyer_share"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <cn.com.yqhome.instrumentapp.View.NoTouchLinearLayout
+        android:id="@+id/edit_vg_lyt"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#77030303"
+        android:gravity="bottom"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/content_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <LinearLayout
+            android:id="@+id/ll_comment_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F1F1F1"
+            android:orientation="vertical"
+            android:paddingBottom="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp">
+            <!-- 输入框 -->
+            <EditText
+                android:id="@+id/edit_comment"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edittext_bg"
+                android:gravity="left"
+                android:inputType="textMultiLine"
+                android:maxLength="140"
+                android:maxLines="6"
+                android:minHeight="120dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="可撰写字"
+                        android:textColor="#848484" />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/font_140_03" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="字"
+                        android:textColor="#848484" />
+                </LinearLayout>
+
+
+                <CheckBox
+                    android:id="@+id/checkbox_anonymous"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:text="匿名发布"
+                    android:textColor="#848484"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp">
+
+                <Button
+                    android:id="@+id/but_comment_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/button_comment"
+                    android:text="发表"
+                    android:textColor="#ffffff" />
+            </RelativeLayout>
+        </LinearLayout>
+    </cn.com.yqhome.instrumentapp.View.NoTouchLinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

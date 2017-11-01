@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/write_formu_layout"
+    android:background="#f3f3f3"
+    tools:context="cn.com.yqhome.instrumentapp.Fragments.Forum.WriteForumActivity">
+
+    <ScrollView
+        android:id="@+id/write_formu_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@+id/write_formu_layout"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/write_formu_submit"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/write_formu_layout"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="@+id/write_formu_layout">
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:background="@drawable/field_shape_corner"
+                android:layout_marginTop="20dp"
+                android:textSize="@dimen/news_subtitle"
+                android:textColor="@color/bpDark_gray"
+                android:hint="帖子名称"
+                android:padding="10dp"
+                android:id="@+id/wirte_forum_title"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                />
+            <EditText
+                android:background="@drawable/field_shape_corner"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/news_subtitle"
+                android:textColor="@color/bpDark_gray"
+                android:hint="分类"
+                android:padding="10dp"
+                android:id="@+id/write_formu_type"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+            <EditText
+                android:background="@drawable/field_shape_corner"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/news_subtitle"
+                android:textColor="@color/bpDark_gray"
+                android:hint="乐器名称"
+                android:padding="10dp"
+                android:id="@+id/wirte_forum_subtype"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+            <EditText
+                android:background="@drawable/field_shape_corner"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/news_subtitle"
+                android:textColor="@color/bpDark_gray"
+                android:hint="帖子标签"
+                android:padding="10dp"
+                android:id="@+id/write_formu_tags"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <cn.com.yqhome.instrumentapp.RichText.RichTextEditor
+                android:background="@drawable/field_shape_corner"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/news_subtitle"
+                android:textColor="@color/bpDark_gray"
+                android:hint="帖子标签"
+                android:id="@+id/write_formu_richText"
+                android:layout_width="match_parent"
+                android:layout_height="400dp">
+            </cn.com.yqhome.instrumentapp.RichText.RichTextEditor>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/write_formu_submit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:text="发布帖子"
+        android:textAlignment="center"
+        android:textColor="@color/bpWhite"
+        android:textSize="@dimen/news_title"
+        android:background="@color/blue"
+        app:layout_constraintLeft_toLeftOf="@+id/write_formu_layout"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="@+id/write_formu_layout"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/write_formu_layout"
+         />
+</android.support.constraint.ConstraintLayout>

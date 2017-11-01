@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/learn_content_layout"
+    tools:context="cn.com.yqhome.instrumentapp.LearnContentActivity">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/learn_content_viewpager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/learn_content_playercontainer"
+        android:background="@color/grey"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@id/learn_content_layout"
+        app:layout_constraintRight_toRightOf="@id/learn_content_layout"
+        app:layout_constraintTop_toTopOf="@id/learn_content_layout">
+
+    </android.support.v4.view.ViewPager>
+    <View
+        android:id="@+id/learn_content_layer"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/bg_score"
+        app:layout_constraintLeft_toLeftOf="@id/learn_content_layout"
+        app:layout_constraintTop_toTopOf="@id/learn_content_layout"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        />
+    <LinearLayout
+        android:id="@+id/learn_content_dot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:orientation="horizontal"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@id/learn_content_layout"
+        app:layout_constraintBottom_toBottomOf="@id/learn_content_viewpager"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@id/learn_content_layout"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/learn_content_playercontainer"
+        android:orientation="horizontal"
+        android:background="@color/bpDark_gray"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/learn_content_layout"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="@id/learn_content_layout"
+        app:layout_constraintBottom_toBottomOf="@id/learn_content_layout"
+        android:layout_marginBottom="0dp">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <SeekBar
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:id="@+id/content_learn_timeBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:secondaryProgressTint="@color/bpDarker_red"
+                />
+
+            <TextView
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAlignment="center"
+                android:scrollHorizontally="true"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/bpWhite"
+                android:text="0:00/0:00"
+                android:id="@+id/content_learn_playTime"
+                 />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_weight="7"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageButton
+                android:layout_gravity="center"
+                android:id="@+id/content_learn_play"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/rounded_corner"
+                android:contentDescription=""
+                android:scaleType="fitCenter"
+                android:src="@drawable/play" />
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

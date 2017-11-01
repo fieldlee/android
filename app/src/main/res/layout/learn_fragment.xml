@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/learn_fragment_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/learn_fragment_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="@id/learn_fragment_layout"
+        app:layout_constraintRight_toRightOf="@id/learn_fragment_layout"
+        app:layout_constraintTop_toTopOf="@id/learn_fragment_layout"
+        app:tabIndicatorColor="@color/orange"
+        app:tabIndicatorHeight="2dp"
+        app:tabTextAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        app:tabMode="scrollable"
+        app:tabPaddingBottom="5dp"
+        app:tabSelectedTextColor="@color/orange"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="0dp">
+    </android.support.design.widget.TabLayout>
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/learn_fragment_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toBottomOf="@id/learn_fragment_layout"
+        app:layout_constraintLeft_toLeftOf="@id/learn_fragment_layout"
+        app:layout_constraintRight_toRightOf="@id/learn_fragment_layout"
+        app:layout_constraintTop_toBottomOf="@+id/learn_fragment_tabs"
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="106dp">
+
+    </android.support.v4.view.ViewPager>
+
+    <cn.com.yqhome.instrumentapp.DropDown.DropDownMenu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/forum_fragment_dropDownMenu"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/learn_fragment_layout"
+        app:layout_constraintLeft_toLeftOf="@id/learn_fragment_layout"
+        app:layout_constraintRight_toRightOf="@id/learn_fragment_layout"
+        app:layout_constraintTop_toBottomOf="@+id/learn_fragment_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:dividerColor="@color/blue_app"
+        app:maskColor="@color/mask_color"
+        app:menuBackgroundColor="@color/base_title_color"
+        app:menuSelectedIcon="@drawable/ic_img_up"
+        app:menuTextSize="16sp"
+        app:menuUnselectedIcon="@drawable/ic_img_down"
+        app:textSelectedColor="@color/blue_app"
+        app:textUnselectedColor="@color/drop_down_unselected"
+        app:underlineColor="@color/blue_app" />
+
+</android.support.constraint.ConstraintLayout>

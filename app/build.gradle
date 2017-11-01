@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "cn.com.yqhome.instrumentapp"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+}
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.github.nkzawa:socket.io-client:0.4.2'
+    compile 'io.pristine:libjingle:8871@aar'
+    compile 'de.hdodenhof:circleimageview:1.3.0'
+    compile 'com.makeramen:roundedimageview:2.3.0'
+    compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'com.github.FranciscoJavierPRamos:Android-FilterView:1.0.4'
+    compile 'cn.jzvd:jiaozivideoplayer:6.0.0'
+    compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.2'
+    compile 'com.github.sharish:ShimmerRecyclerView:v1.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha2'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile "com.android.support:cardview-v7:25.3.1"
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    testCompile 'junit:junit:4.12'
+}
