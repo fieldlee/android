@@ -6,8 +6,8 @@
     android:layout_height="match_parent">
 
     <android.support.design.widget.TabLayout
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/forum_fragment_tabs"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -25,11 +25,11 @@
     <android.support.v4.view.ViewPager
         android:layout_below="@id/forum_fragment_tabs"
         android:layout_marginTop="30dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/forum_fragment_viewpager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="10dp"
         ></android.support.v4.view.ViewPager>
 
     <cn.com.yqhome.instrumentapp.DropDown.DropDownMenu xmlns:android="http://schemas.android.com/apk/res/android"
@@ -38,15 +38,15 @@
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        app:dividerColor="@color/blue_app"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:dividerColor="@color/light_grey"
         app:maskColor="@color/mask_color"
-        app:menuBackgroundColor="@color/base_title_color"
+        app:menuBackgroundColor="@color/light_grey"
         app:menuSelectedIcon="@drawable/ic_img_up"
         app:menuTextSize="16sp"
         app:menuUnselectedIcon="@drawable/ic_img_down"
-        app:textSelectedColor="@color/blue_app"
+        app:textSelectedColor="@color/orange"
         app:textUnselectedColor="@color/drop_down_unselected"
-        app:underlineColor="@color/blue_app" />
+        app:underlineColor="@color/light_grey" />
 </RelativeLayout>

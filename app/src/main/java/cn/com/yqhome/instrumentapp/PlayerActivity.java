@@ -75,6 +75,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     private PlayerActivity mPlayerActivity;
     private CommentAdapter commentAdapter;
+    private String commentPid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -165,13 +166,29 @@ public class PlayerActivity extends AppCompatActivity {
         commentlistview.setDivider(new ColorDrawable(getResources().getColor(R.color.dividerColor)));
 //      comment List View
         commentAdapter = new CommentAdapter(this,this);
+
+        commentAdapter.commentlistener = new CommentAdapter.OnCommentClickListener(){
+            @Override
+            public void onCommentClick(String id) {
+                commentPid = id;
+                edit_vg_lyt.setVisibility(View.VISIBLE);
+                replyLinearLayout.setVisibility(View.GONE);
+                onFocusChange(true);
+            }
+        };
+
+        commentAdapter.supportlistener = new CommentAdapter.OnSupportClickListener(){
+            @Override
+            public void onSupportClick(String id) {
+
+            }
+        };
         if (news != null){
             commentAdapter.setNews(news);
         }
         if (forum != null){
             commentAdapter.setForum(forum);
         }
-
         commentlistview.setAdapter(commentAdapter);
 
 //        回复评论按钮
@@ -309,14 +326,28 @@ public class PlayerActivity extends AppCompatActivity {
                         return;
                     }
                     RequestParams params = new RequestParams();
-                    if (news != null){
-                        params.add("parentId",news.id);
+                    if (commentPid == null){
+                        if (news != null){
+                            params.add("parentId",news.id);
+                        }
+                        if (forum != null){
+                            params.add("parentId",forum.id);
+                        }
                     }
-                    if (forum != null){
-                        params.add("parentId",forum.id);
+                    else{
+                        params.add("parentId",commentPid);
                     }
                     params.add("content", String.valueOf(mCommentEdittext.getText()));
-                    params.add("author","18616017950");
+
+
+                    if (BaseUtils.getUser(PlayerActivity.this).get("id") != null){
+                        params.add("author",BaseUtils.getUser(PlayerActivity.this).get("id").toString());
+                    }
+                    else{
+                        params.add("author","18616017950");
+                    }
+
+
                     WebUtils.WriteComment(mPlayerActivity,params,new CallbackListener(){
                         @Override
                         public void commentWriteCallback() {
@@ -339,6 +370,14 @@ public class PlayerActivity extends AppCompatActivity {
     }
     private void onFocusChange(boolean hasFocus) {
         final boolean isFocus = hasFocus;
+        if (isFocus == false){
+            commentPid = null;
+        }else{
+            if (!BaseUtils.isLogin(mPlayerActivity)){
+                return;
+            }
+        }
+
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
                 InputMethodManager imm = (InputMethodManager)

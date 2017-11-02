@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.loopj.android.http.RequestParams;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +35,7 @@ import cn.com.yqhome.instrumentapp.BaseUtils;
 import cn.com.yqhome.instrumentapp.Class.Comment;
 import cn.com.yqhome.instrumentapp.Class.Forum;
 import cn.com.yqhome.instrumentapp.Class.News;
+import cn.com.yqhome.instrumentapp.Fragments.Adapters.ForumAdapter;
 import cn.com.yqhome.instrumentapp.Fragments.Interface.CallbackListener;
 import cn.com.yqhome.instrumentapp.R;
 import cn.com.yqhome.instrumentapp.WebUtils;
@@ -49,6 +51,7 @@ public class ContentAdapter extends BaseAdapter {
     private static final int CELL_IMAGE = 2;
     private static final int CELL_DIVER = 3;
     private static final int CELL_COMMENT = 4;
+    private static final int CELL_RECOMMENT = 5;
     private String[] ls;
     private List<HashMap<String,String>> list;
     private List<JSONObject> comments = new ArrayList<>();
@@ -58,6 +61,17 @@ public class ContentAdapter extends BaseAdapter {
     private News news;
     private Forum forum;
     private ContentAdapter mContentAdapter;
+
+    public interface OnCommentClickListener {
+        void onCommentClick(String id);
+    }
+    public interface OnSupportClickListener {
+        void onSupportClick(String id);
+    }
+
+    public OnCommentClickListener commentlistener;
+    public OnSupportClickListener supportlistener;
+
     public ContentAdapter(Context context,Activity activity,
                           String contentHtml
                             ) {
@@ -78,9 +92,6 @@ public class ContentAdapter extends BaseAdapter {
             }
             list.add(tmpMap);
         }
-
-        this.comments = comments;
-
         mContext = context;
         mActivity = activity;
         mContentAdapter = this;
@@ -91,7 +102,26 @@ public class ContentAdapter extends BaseAdapter {
         WebUtils.Comment(mActivity,new RequestParams(),this.news.id,new CallbackListener(){
             @Override
             public void commentCallback(List<JSONObject> commentslist) {
-                comments = commentslist;
+                for (int i = 0; i < commentslist.size(); i++) {
+                    JSONObject comJson = commentslist.get(i);
+                    try {
+                        comJson.put("isSub",false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    comments.add(comJson); //添加
+                    try {
+                        if (comJson.getJSONArray("subComments") != null && comJson.getJSONArray("subComments").length()>0){
+                            for (int j = 0; j < comJson.getJSONArray("subComments").length(); j++) {
+                                JSONObject subComJson = comJson.getJSONArray("subComments").getJSONObject(j);
+                                subComJson.put("isSub",true); //Sub 添加
+                                comments.add(subComJson); //添加
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 mContentAdapter.notifyDataSetChanged();
             }
         });
@@ -102,18 +132,57 @@ public class ContentAdapter extends BaseAdapter {
         WebUtils.Comment(mActivity,new RequestParams(),this.forum.id,new CallbackListener(){
             @Override
             public void commentCallback(List<JSONObject> commentslist) {
-                comments = commentslist;
+                for (int i = 0; i < commentslist.size(); i++) {
+                    JSONObject comJson = commentslist.get(i);
+                    try {
+                        comJson.put("isSub",false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    comments.add(comJson); //添加
+                    try {
+                        if (comJson.getJSONArray("subComments") != null && comJson.getJSONArray("subComments").length()>0){
+                            for (int j = 0; j < comJson.getJSONArray("subComments").length(); j++) {
+                                JSONObject subComJson = comJson.getJSONArray("subComments").getJSONObject(j);
+                                subComJson.put("isSub",true); //Sub 添加
+                                comments.add(subComJson); //添加
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 mContentAdapter.notifyDataSetChanged();
             }
         });
     }
 
     public void reloadDatas(){
+        comments = new ArrayList<JSONObject>();
         if (news != null){
             WebUtils.Comment(mActivity,new RequestParams(),this.news.id,new CallbackListener(){
                 @Override
                 public void commentCallback(List<JSONObject> commentslist) {
-                    comments = commentslist;
+                    for (int i = 0; i < commentslist.size(); i++) {
+                        JSONObject comJson = commentslist.get(i);
+                        try {
+                            comJson.put("isSub",false);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        comments.add(comJson); //添加
+                        try {
+                            if (comJson.getJSONArray("subComments") != null && comJson.getJSONArray("subComments").length()>0){
+                                for (int j = 0; j < comJson.getJSONArray("subComments").length(); j++) {
+                                    JSONObject subComJson = comJson.getJSONArray("subComments").getJSONObject(j);
+                                    subComJson.put("isSub",true); //Sub 添加
+                                    comments.add(subComJson); //添加
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     mContentAdapter.notifyDataSetChanged();
                 }
             });
@@ -122,7 +191,26 @@ public class ContentAdapter extends BaseAdapter {
             WebUtils.Comment(mActivity,new RequestParams(),this.forum.id,new CallbackListener(){
                 @Override
                 public void commentCallback(List<JSONObject> commentslist) {
-                    comments = commentslist;
+                    for (int i = 0; i < commentslist.size(); i++) {
+                        JSONObject comJson = commentslist.get(i);
+                        try {
+                            comJson.put("isSub",false);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        comments.add(comJson); //添加
+                        try {
+                            if (comJson.getJSONArray("subComments") != null && comJson.getJSONArray("subComments").length()>0){
+                                for (int j = 0; j < comJson.getJSONArray("subComments").length(); j++) {
+                                    JSONObject subComJson = comJson.getJSONArray("subComments").getJSONObject(j);
+                                    subComJson.put("isSub",true); //Sub 添加
+                                    comments.add(subComJson); //添加
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     mContentAdapter.notifyDataSetChanged();
                 }
             });
@@ -164,6 +252,19 @@ public class ContentAdapter extends BaseAdapter {
                     return CELL_TEXT;
                 }
             }else if(position>list.size()+1 && position <= list.size()+comments.size()+1){
+
+                if (comments.get(position-(list.size()+2)) != null){
+                    JSONObject tmpJsonObj = comments.get(position-(list.size()+2));
+                    try {
+                        if (tmpJsonObj.getBoolean("isSub")==false){
+                            return CELL_COMMENT;
+                        }else{
+                            return CELL_RECOMMENT;
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 return CELL_COMMENT;
             }
             else{
@@ -173,7 +274,7 @@ public class ContentAdapter extends BaseAdapter {
     }
     @Override
     public int getViewTypeCount() {
-        return 5;
+        return 6;
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -183,21 +284,33 @@ public class ContentAdapter extends BaseAdapter {
         ViewHolderHeader holderHeader = null;
         ViewHolderDiver holderDiver = null;
         ViewHolderComment holderComment = null;
+        ViewHolderReComment holderReComment = null;
         int type = getItemViewType(position);
         if (convertView == null) {
             inflater = LayoutInflater.from(mContext);
 //            // 按当前所需的样式，确定new的布局
             switch (type) {
+                case CELL_RECOMMENT:
+                    convertView = inflater.inflate(R.layout.comment_re_cell_html,
+                            parent, false);
+                    holderReComment = new ViewHolderReComment();
+                    holderReComment.avator = (TextView)convertView.findViewById(R.id.recomment_cell_avator);
+                    holderReComment.avatorImage = (ImageView)convertView.findViewById(R.id.recomment_cell_avatorimage);
+                    holderReComment.commentTime = (TextView)convertView.findViewById(R.id.recomment_cell_time);
+                    holderReComment.comment = (TextView)convertView.findViewById(R.id.recomment_cell_html);
+                    convertView.setTag(holderReComment);
+                    break;
                 case CELL_COMMENT:
                     convertView = inflater.inflate(R.layout.comment_cell_html,
                             parent, false);
                     holderComment = new ViewHolderComment();
 
                     holderComment.avator = (TextView)convertView.findViewById(R.id.comment_cell_avator);
-                    holderComment.avatorImage = (ImageView)convertView.findViewById(R.id.comment_cell_avatorimage);
+                    holderComment.avatorImage = (RoundedImageView)convertView.findViewById(R.id.comment_cell_avatorimage);
                     holderComment.commentTime = (TextView)convertView.findViewById(R.id.comment_cell_time);
                     holderComment.comment = (TextView)convertView.findViewById(R.id.comment_cell_html);
-
+                    holderComment.commentBtn = (Button)convertView.findViewById(R.id.comment_cell_recomment_btn);
+                    holderComment.supportBtn = (Button)convertView.findViewById(R.id.comment_cell_support_btn);
                     convertView.setTag(holderComment);
                     break;
                 case CELL_DIVER:
@@ -238,6 +351,9 @@ public class ContentAdapter extends BaseAdapter {
             }
         } else {
             switch (type) {
+                case CELL_RECOMMENT:
+                    holderReComment = (ViewHolderReComment) convertView.getTag();
+                    break;
                 case CELL_COMMENT:
                     holderComment = (ViewHolderComment) convertView.getTag();
                     break;
@@ -258,8 +374,42 @@ public class ContentAdapter extends BaseAdapter {
         }
         // 设置资源
         switch (type) {
+            case CELL_RECOMMENT:
+                JSONObject recomObj = comments.get(position-list.size()-2);
+                try {
+                    holderReComment.avator.setText(recomObj.getString("avator"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    holderReComment.commentTime.setText(recomObj.getString("fromTime"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    holderReComment.comment.setText(Html.fromHtml(recomObj.getString("content")));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    if (recomObj.getString("avatorPath").length()>500){
+                        String pureBase64Encoded = recomObj.getString("avatorPath").substring(recomObj.getString("avatorPath").indexOf(",")  + 1);
+                        byte[] decodedString = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        holderReComment.avatorImage.setImageBitmap(decodedByte);
+                    }
+                    else{
+                        Glide.with(mContext).load(recomObj.getString("avatorPath")).into(holderReComment.avatorImage);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
             case CELL_COMMENT:
-                JSONObject comObj = comments.get(position-list.size()-2);
+                final JSONObject comObj = comments.get(position-list.size()-2);
                 try {
                     holderComment.avator.setText(comObj.getString("avator"));
                 } catch (JSONException e) {
@@ -287,10 +437,37 @@ public class ContentAdapter extends BaseAdapter {
                     else{
                         Glide.with(mContext).load(comObj.getString("avatorPath")).into(holderComment.avatorImage);
                     }
-                    break;
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                if (commentlistener != null){
+                        holderComment.commentBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try {
+                                commentlistener.onCommentClick(comObj.getString("_id"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                }
+
+                if (supportlistener != null){
+                    holderComment.supportBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                supportlistener.onSupportClick(comObj.getString("_id"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+
+                break;
             case CELL_DIVER:
 
                 break;
@@ -337,11 +514,20 @@ public class ContentAdapter extends BaseAdapter {
         return convertView;
     }
 
+    private class ViewHolderReComment{
+        ImageView avatorImage;
+        TextView avator;
+        TextView comment;
+        TextView commentTime;
+    }
+
     private class ViewHolderComment{
         ImageView avatorImage;
         TextView avator;
         TextView comment;
         TextView commentTime;
+        Button commentBtn;
+        Button supportBtn;
     }
 
     private class ViewHolderDiver{

@@ -140,14 +140,10 @@ public class LearnContentActivity extends AppCompatActivity {
             toast.show();
             finish();
         }
-
         setContentView(R.layout.activity_learn_content);
 
 //        init view
         viewPager = (ViewPager) findViewById(R.id.learn_content_viewpager);
-
-
-
         dotLayout = (LinearLayout)findViewById(R.id.learn_content_dot);
 
         palyContrainer = (LinearLayout)findViewById(R.id.learn_content_playercontainer);
@@ -183,9 +179,13 @@ public class LearnContentActivity extends AppCompatActivity {
             play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                http://vprbbc.streamguys.net/vprbbc24.mp3
                     if (isplaying == false ){
                         if (prepared){
+                            try {
+                                mediaPlayer.prepare();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             mediaPlayer.start();
                             isplaying = true;
                             startRunnable();
@@ -402,6 +402,7 @@ public class LearnContentActivity extends AppCompatActivity {
                     Log.i(TAG,"onCompletion=================");
                     stopRunnable();
                     mediaPlayer.stop();
+                    isplaying = false;
                     //初始化timebar and time show
                     timeBar.setProgress(0);
                     playerTime.setText("0.00/"+mediaDuration);
@@ -455,7 +456,6 @@ public class LearnContentActivity extends AppCompatActivity {
 
 
     }
-
     /**
      * onDestroy
      */
@@ -572,7 +572,7 @@ public class LearnContentActivity extends AppCompatActivity {
                 setPlayerTitleText();
             }
             if (!kill) {
-                handler.postDelayed(this, 500);
+                handler.postDelayed(this, 250);
             }
         }
     };

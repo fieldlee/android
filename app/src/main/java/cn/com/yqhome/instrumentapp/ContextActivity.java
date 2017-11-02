@@ -54,13 +54,14 @@ public class ContextActivity extends AppCompatActivity implements View.OnClickLi
     private EditText mCommentEdittext;
     private Button mSendBut;
     private boolean isEidtComment;
+    private String commentPid;
     private News news;
     private Forum forum;
     private String htmlContent;
     private static final String TAGKey = "ContextActivity";
 
     private  ContentAdapter contentAdapter;
-    private ContextActivity mContextActivity;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +107,22 @@ public class ContextActivity extends AppCompatActivity implements View.OnClickLi
         if (news != null){
             contentAdapter.setNews(news);
         }
+        contentAdapter.commentlistener = new ContentAdapter.OnCommentClickListener() {
+            @Override
+            public void onCommentClick(String id) {
+                commentPid = id;
+                edit_vg_lyt.setVisibility(View.VISIBLE);
+                replyLinearLayout.setVisibility(View.GONE);
+                onFocusChange(true);
+            }
+        };
+
+        contentAdapter.supportlistener = new ContentAdapter.OnSupportClickListener() {
+            @Override
+            public void onSupportClick(String id) {
+
+            }
+        };
 
         contentListView.setAdapter(contentAdapter);
         contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -143,8 +160,7 @@ public class ContextActivity extends AppCompatActivity implements View.OnClickLi
         replyTextView.setOnClickListener(new ClickListener());
 //        评论界面发表按钮
         mSendBut.setOnClickListener(new ClickListener());
-//      activity
-        mContextActivity = this;
+
     }
 
     @Nullable
@@ -164,7 +180,6 @@ public class ContextActivity extends AppCompatActivity implements View.OnClickLi
             View v = getCurrentFocus();
             if (isShouldHideInput(v, ev)) {
                 onFocusChange(false);
-
             }
             return super.dispatchTouchEvent(ev);
         }
@@ -218,18 +233,26 @@ public class ContextActivity extends AppCompatActivity implements View.OnClickLi
                         return;
                     }
                     RequestParams params = new RequestParams();
-                    if (news != null){
-                        params.add("parentId",news.id);
+
+                    if (commentPid == null){
+                        if (news != null){
+                            params.add("parentId",news.id);
+                        }
+                        if (forum != null){
+                            params.add("parentId",forum.id);
+                        }
+                    }else{
+                        params.add("parentId",commentPid);
                     }
 
                     params.add("content", String.valueOf(mCommentEdittext.getText()));
-//                    if (BaseUtils.getUser(getParent()).get("id") != null){
-//                        params.add("author",BaseUtils.getUser(mContextActivity).get("id").toString());
-//                    }
-//                    else{
+                    if (BaseUtils.getUser(ContextActivity.this).get("id") != null){
+                        params.add("author",BaseUtils.getUser(ContextActivity.this).get("id").toString());
+                    }
+                    else{
                         params.add("author","18616017950");
-//                    }
-                    WebUtils.WriteComment(mContextActivity,params,new CallbackListener(){
+                    }
+                    WebUtils.WriteComment(ContextActivity.this,params,new CallbackListener(){
                         @Override
                         public void commentWriteCallback() {
                             mCommentEdittext.setText("");
@@ -252,6 +275,15 @@ public class ContextActivity extends AppCompatActivity implements View.OnClickLi
     }
     private void onFocusChange(boolean hasFocus) {
         final boolean isFocus = hasFocus;
+
+        if (isFocus==false){
+            commentPid = null; //收缩后清空pid
+        }else{
+            if (!BaseUtils.isLogin(ContextActivity.this)){
+                return;
+            }
+        }
+
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
                 InputMethodManager imm = (InputMethodManager)

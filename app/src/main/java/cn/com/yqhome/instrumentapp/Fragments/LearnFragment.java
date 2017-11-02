@@ -85,20 +85,18 @@ public class LearnFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
-                for (int i = 0; i < mTabLayout.getTabCount() ; i++) {
-                    TabLayout.Tab tab = mTabLayout.getTabAt(position);
-                    TextView tv= (TextView)tab.getCustomView().findViewById(R.id.tab_title);
-                    if(tv != null){
-                        if (position == i){
-                            tv.setTextColor(R.color.orange);
-                        }
-                       else{
-                            tv.setTextColor(R.color.blue);
-                        }
-                    }
-                }
-
-
+//                for (int i = 0; i < mTabLayout.getTabCount() ; i++) {
+//                    TabLayout.Tab tab = mTabLayout.getTabAt(position);
+//                    TextView tv= (TextView)tab.getCustomView().findViewById(R.id.tab_title);
+//                    if(tv != null){
+//                        if (position == i){
+//                            tv.setTextColor(R.color.orange);
+//                        }
+//                       else{
+//                            tv.setTextColor(R.color.blue);
+//                        }
+//                    }
+//                }
             }
 
             @Override
@@ -112,12 +110,10 @@ public class LearnFragment extends BaseFragment {
         mTabLayout.setupWithViewPager(learnViewPager);
 
         mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
-            TabLayout.Tab tab = mTabLayout.getTabAt(i);
-            tab.setCustomView(learnAdapter.getTabView(i));
-        }
-
-
+//        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
+//            TabLayout.Tab tab = mTabLayout.getTabAt(i);
+//            tab.setCustomView(learnAdapter.getTabView(i));
+//        }
 
 //        下拉菜单设置
 
@@ -188,16 +184,16 @@ public class LearnFragment extends BaseFragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return null;
+            return mTitles[position];
         }
 
-        public View getTabView(int position){
-            View view = LayoutInflater.from(getActivity().getApplicationContext()).inflate(R.layout.tab_custom_layout, null);
-            TextView tv= (TextView) view.findViewById(R.id.tab_title);
-            tv.setText(mTitles[position]);
-            ImageView img = (ImageView) view.findViewById(R.id.tab_imageview);
-            img.setImageResource(R.drawable.ball);
-            return view;
-        }
+//        public View getTabView(int position){
+//            View view = LayoutInflater.from(getActivity().getApplicationContext()).inflate(R.layout.tab_custom_layout, null);
+//            TextView tv= (TextView) view.findViewById(R.id.tab_title);
+//            tv.setText(mTitles[position]);
+//            ImageView img = (ImageView) view.findViewById(R.id.tab_imageview);
+//            img.setImageResource(R.drawable.ball);
+//            return view;
+//        }
     }
 }

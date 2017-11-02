@@ -219,8 +219,9 @@ public class ItemHolder extends RecyclerView.ViewHolder {
             if (viewType ==BaseUtils.CELL_VIDEO_PICTURE){
                 nTitle.setText(forum.title);
                 nSubTitle.setText(forum.avator);
-//                nVideoTime.setText(forum.duration);
-                nVideoTime.setText("5:30");
+                if (forum.duration != null && forum.duration != ""){
+                    nVideoTime.setText(forum.duration);
+                }
 
                 if (forum.images!=null && forum.images.length>0){
                     if (forum.images[0].indexOf("localhost")>0){
@@ -256,8 +257,9 @@ public class ItemHolder extends RecyclerView.ViewHolder {
                     }
                 }
 
-                nVideoTime.setText(forum.duration);
-//                nVideoTime.setText(forum.duration);
+                if (forum.duration != null && forum.duration != ""){
+                    nVideoTime.setText(forum.duration);
+                }
                 if (forum.avatorPath.length()>500){
 
                     String pureBase64Encoded = forum.avatorPath.substring(forum.avatorPath.indexOf(",")  + 1);

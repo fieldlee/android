@@ -48,6 +48,16 @@ public class CommentAdapter extends BaseAdapter {
     private Activity mActivity;
     private CommentAdapter mCommentAdapter;
 
+    public interface OnCommentClickListener {
+        void onCommentClick(String id);
+    }
+    public interface OnSupportClickListener {
+        void onSupportClick(String id);
+    }
+
+    public OnCommentClickListener commentlistener;
+    public OnSupportClickListener supportlistener;
+
     public CommentAdapter(Context context, Activity activity){
         mContext = context;
         mActivity = activity;
@@ -60,8 +70,26 @@ public class CommentAdapter extends BaseAdapter {
         WebUtils.Comment(mActivity,new RequestParams(),this.forum.id, new CallbackListener(){
             @Override
             public void commentCallback(List<JSONObject> commentslist) {
-                list = commentslist;
-
+                for (int i = 0; i < commentslist.size(); i++) {
+                    JSONObject comJson = commentslist.get(i);
+                    try {
+                        comJson.put("isSub",false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    list.add(comJson); //添加
+                    try {
+                        if (comJson.getJSONArray("subComments") != null && comJson.getJSONArray("subComments").length()>0){
+                            for (int j = 0; j < comJson.getJSONArray("subComments").length(); j++) {
+                                JSONObject subComJson = comJson.getJSONArray("subComments").getJSONObject(j);
+                                subComJson.put("isSub",true); //Sub 添加
+                                list.add(subComJson); //添加
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 mCommentAdapter.notifyDataSetChanged();
             }
         });
@@ -72,20 +100,57 @@ public class CommentAdapter extends BaseAdapter {
         WebUtils.Comment(mActivity,new RequestParams(),this.news.id, new CallbackListener(){
             @Override
             public void commentCallback(List<JSONObject> commentslist) {
-                list = commentslist;
-
+                for (int i = 0; i < commentslist.size(); i++) {
+                    JSONObject comJson = commentslist.get(i);
+                    try {
+                        comJson.put("isSub",false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    list.add(comJson); //添加
+                    try {
+                        if (comJson.getJSONArray("subComments") != null && comJson.getJSONArray("subComments").length()>0){
+                            for (int j = 0; j < comJson.getJSONArray("subComments").length(); j++) {
+                                JSONObject subComJson = comJson.getJSONArray("subComments").getJSONObject(j);
+                                subComJson.put("isSub",true); //Sub 添加
+                                list.add(subComJson); //添加
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 mCommentAdapter.notifyDataSetChanged();
             }
         });
     }
 
     public void reloadDatas(){
+        list = new ArrayList<JSONObject>();
         if (news != null){
             WebUtils.Comment(mActivity,new RequestParams(),this.news.id,new CallbackListener(){
                 @Override
                 public void commentCallback(List<JSONObject> commentslist) {
-                    list = commentslist;
-
+                    for (int i = 0; i < commentslist.size(); i++) {
+                        JSONObject comJson = commentslist.get(i);
+                        try {
+                            comJson.put("isSub",false);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        list.add(comJson); //添加
+                        try {
+                            if (comJson.getJSONArray("subComments") != null && comJson.getJSONArray("subComments").length()>0){
+                                for (int j = 0; j < comJson.getJSONArray("subComments").length(); j++) {
+                                    JSONObject subComJson = comJson.getJSONArray("subComments").getJSONObject(j);
+                                    subComJson.put("isSub",true); //Sub 添加
+                                    list.add(subComJson); //添加
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     mCommentAdapter.notifyDataSetChanged();
                 }
             });
@@ -94,8 +159,26 @@ public class CommentAdapter extends BaseAdapter {
             WebUtils.Comment(mActivity,new RequestParams(),this.forum.id,new CallbackListener(){
                 @Override
                 public void commentCallback(List<JSONObject> commentslist) {
-                    list = commentslist;
-
+                    for (int i = 0; i < commentslist.size(); i++) {
+                        JSONObject comJson = commentslist.get(i);
+                        try {
+                            comJson.put("isSub",false);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        list.add(comJson); //添加
+                        try {
+                            if (comJson.getJSONArray("subComments") != null && comJson.getJSONArray("subComments").length()>0){
+                                for (int j = 0; j < comJson.getJSONArray("subComments").length(); j++) {
+                                    JSONObject subComJson = comJson.getJSONArray("subComments").getJSONObject(j);
+                                    subComJson.put("isSub",true); //Sub 添加
+                                    list.add(subComJson); //添加
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     mCommentAdapter.notifyDataSetChanged();
                 }
             });
@@ -118,13 +201,29 @@ public class CommentAdapter extends BaseAdapter {
     }
 
     public int getItemViewType(int position) {
+        if (list.get(position) != null){
+            JSONObject tmpObj = list.get(position);
+            try {
+                if (tmpObj.getBoolean("isSub") == false){
+                    return CELL_COMMENT;
+                }else{
+                    return CELL_SUBCOMMENT;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         return CELL_COMMENT;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 3;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater;
-//        ViewHolderDiver holderDiver = null;
         ViewHolderForum holderForum = null;
         ViewHolderSubForum holderSubForum = null;
         int type = getItemViewType(position);
@@ -133,27 +232,26 @@ public class CommentAdapter extends BaseAdapter {
 //            // 按当前所需的样式，确定new的布局
             switch (type) {
                 case CELL_SUBCOMMENT:
-                    convertView = inflater.inflate(R.layout.comment_cell_html,
+                    convertView = inflater.inflate(R.layout.comment_re_cell_html,
                             parent, false);
+
                     holderSubForum = new ViewHolderSubForum();
-
-                    holderSubForum.avatorView = (TextView)convertView.findViewById(R.id.comment_cell_avator);
-                    holderSubForum.avatorImage = (ImageView)convertView.findViewById(R.id.comment_cell_avatorimage);
-                    holderSubForum.timeView = (TextView)convertView.findViewById(R.id.comment_cell_time);
-                    holderSubForum.contentView = (TextView)convertView.findViewById(R.id.comment_cell_html);
-
+                    holderSubForum.avatorView = (TextView)convertView.findViewById(R.id.recomment_cell_avator);
+                    holderSubForum.avatorImage = (ImageView)convertView.findViewById(R.id.recomment_cell_avatorimage);
+                    holderSubForum.timeView = (TextView)convertView.findViewById(R.id.recomment_cell_time);
+                    holderSubForum.contentView = (TextView)convertView.findViewById(R.id.recomment_cell_html);
                     convertView.setTag(holderSubForum);
                     break;
                 case CELL_COMMENT:
                     convertView = inflater.inflate(R.layout.comment_cell_html,
                             parent, false);
                     holderForum = new ViewHolderForum();
-
                     holderForum.avatorView = (TextView)convertView.findViewById(R.id.comment_cell_avator);
                     holderForum.avatorImage = (ImageView)convertView.findViewById(R.id.comment_cell_avatorimage);
                     holderForum.timeView = (TextView)convertView.findViewById(R.id.comment_cell_time);
                     holderForum.contentView = (TextView)convertView.findViewById(R.id.comment_cell_html);
-
+                    holderForum.supportBtn = (Button)convertView.findViewById(R.id.comment_cell_support_btn);
+                    holderForum.commentBtn = (Button)convertView.findViewById(R.id.comment_cell_recomment_btn);
                     convertView.setTag(holderForum);
                     break;
                 default:
@@ -162,22 +260,51 @@ public class CommentAdapter extends BaseAdapter {
         } else {
             switch (type) {
                 case CELL_COMMENT:
-                    holderForum = (ViewHolderForum) convertView.getTag();
+                    holderForum     = (ViewHolderForum) convertView.getTag();
                     break;
                 case CELL_SUBCOMMENT:
-                    holderSubForum =  (ViewHolderSubForum) convertView.getTag();
+                    holderSubForum  = (ViewHolderSubForum) convertView.getTag();
                     break;
             }
         }
         // 设置资源
         switch (type) {
             case CELL_SUBCOMMENT:
-                holderSubForum.contentView.setText("testsetsetset");
-                holderSubForum.timeView.setText("9分钟前");
-                holderSubForum.avatorView.setText("fieldlee");
+                JSONObject tmpreObj = list.get(position);
+                try {
+                    holderSubForum.contentView.setText(Html.fromHtml(tmpreObj.getString("content")));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    holderSubForum.timeView.setText(tmpreObj.getString("fromTime"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    holderSubForum.avatorView.setText(tmpreObj.getString("avator"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if (tmpreObj.getString("avatorPath").length()>500){
+                        String pureBase64Encoded = tmpreObj.getString("avatorPath").substring(tmpreObj.getString("avatorPath").indexOf(",")  + 1);
+                        byte[] decodedString = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        holderSubForum.avatorImage.setImageBitmap(decodedByte);
+                    }
+                    else{
+                        Glide.with(mContext).load(tmpreObj.getString("avatorPath")).into(holderSubForum.avatorImage);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 break;
             case CELL_COMMENT:
-                JSONObject tmpObj = list.get(position);
+                final JSONObject tmpObj = list.get(position);
                     try {
                         holderForum.contentView.setText(Html.fromHtml(tmpObj.getString("content")));
                     } catch (JSONException e) {
@@ -205,9 +332,35 @@ public class CommentAdapter extends BaseAdapter {
                         else{
                             Glide.with(mContext).load(tmpObj.getString("avatorPath")).into(holderForum.avatorImage);
                         }
-                        break;
+
                     } catch (JSONException e) {
                         e.printStackTrace();
+                    }
+
+                    if (commentlistener != null){
+                        holderForum.commentBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try {
+                                    commentlistener.onCommentClick(tmpObj.getString("_id"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+
+                    if (supportlistener != null){
+                        holderForum.supportBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try {
+                                    supportlistener.onSupportClick(tmpObj.getString("_id"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                     }
                 break;
             case CELL_DIVER:
@@ -226,6 +379,8 @@ public class CommentAdapter extends BaseAdapter {
         TextView avatorView;
         TextView contentView;
         ImageView avatorImage;
+        Button supportBtn;
+        Button commentBtn;
 //        comment_cell_avatorimage
 //        comment_cell_avator
 //        comment_cell_time

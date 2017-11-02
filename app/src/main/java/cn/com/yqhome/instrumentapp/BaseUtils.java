@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
@@ -188,7 +189,7 @@ public class BaseUtils {
     }
 
     public static void saveUser(Activity activity,String avator,String id,boolean rememberMe,String password,String token){
-        SharedPreferences.Editor sharedata = activity.getSharedPreferences("user",0).edit();
+        SharedPreferences.Editor sharedata = activity.getSharedPreferences("user",Context.MODE_PRIVATE).edit();
         sharedata.putString("name",avator);
         sharedata.putString("id",id);
         sharedata.putBoolean("remember",rememberMe);
@@ -199,7 +200,7 @@ public class BaseUtils {
 
     public static Map<String,Object> getUser(Activity activity){
         Map<String,Object> objUser = new HashMap<String,Object>();
-        SharedPreferences sharedData = activity.getSharedPreferences("user",0);
+        SharedPreferences sharedData = activity.getSharedPreferences("user",Context.MODE_PRIVATE);
         objUser.put("name",sharedData.getString("name","")) ;
         objUser.put("id",sharedData.getString("id","")) ;
         objUser.put("image",sharedData.getString("image","")) ;
@@ -265,6 +266,18 @@ public class BaseUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static boolean isLogin(Activity activity){
+        Map<String,Object> loginUser = getUser(activity);
+        if (loginUser.get("id") != null && loginUser.get("id") != ""){
+            return true;
+        }else{
+            Intent intentLive = new Intent(activity,LoginActivity.class);
+            activity.startActivity(intentLive);
+            return  false;
+
         }
     }
 }

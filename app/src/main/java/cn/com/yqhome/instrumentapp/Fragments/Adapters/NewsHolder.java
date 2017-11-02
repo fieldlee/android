@@ -201,6 +201,7 @@ public class NewsHolder extends RecyclerView.ViewHolder {
             if (viewType ==BaseUtils.CELL_VIDEO_PICTURE){
                 nTitle.setText(news.title);
                 nSubTitle.setText(news.avator);
+
 //                nVideoTime.setText(forum.duration);
                 nVideoTime.setText("5:30");
                 Glide.with(this.itemView.getContext()).load(news.images[0]).into(nImageView);
