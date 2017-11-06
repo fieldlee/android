@@ -246,6 +246,7 @@ public class CommentAdapter extends BaseAdapter {
                     convertView = inflater.inflate(R.layout.comment_cell_html,
                             parent, false);
                     holderForum = new ViewHolderForum();
+                    holderForum.supportView = (TextView)convertView.findViewById(R.id.comment_cell_support);
                     holderForum.avatorView = (TextView)convertView.findViewById(R.id.comment_cell_avator);
                     holderForum.avatorImage = (ImageView)convertView.findViewById(R.id.comment_cell_avatorimage);
                     holderForum.timeView = (TextView)convertView.findViewById(R.id.comment_cell_time);
@@ -321,7 +322,13 @@ public class CommentAdapter extends BaseAdapter {
                         e.printStackTrace();
                     }
 
-                    try {
+                try {
+                    holderForum.supportView.setText(tmpObj.getString("support")+"赞");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try {
                         if (tmpObj.getString("avatorPath").length()>500){
                             String pureBase64Encoded = tmpObj.getString("avatorPath").substring(tmpObj.getString("avatorPath").indexOf(",")  + 1);
                             byte[] decodedString = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
@@ -378,6 +385,7 @@ public class CommentAdapter extends BaseAdapter {
         TextView timeView;
         TextView avatorView;
         TextView contentView;
+        TextView supportView;
         ImageView avatorImage;
         Button supportBtn;
         Button commentBtn;

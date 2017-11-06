@@ -30,13 +30,22 @@
             android:layout_width="match_parent"
             android:layout_height="215dp" />
 
-        <ImageView
-            android:scaleType="fitXY"
-            android:id="@+id/cell_video_big_btn"
+        <RelativeLayout
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:background="@drawable/bg_camera"
             android:layout_width="60dp"
-            android:layout_height="60dp" />
+            android:layout_height="60dp">
+            <ImageView
+                android:scaleType="fitXY"
+                android:id="@+id/cell_video_big_btn"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/camera30"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+        </RelativeLayout>
+
 
         <LinearLayout
             android:background="@drawable/corner_shape"

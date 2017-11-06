@@ -1,6 +1,7 @@
 package cn.com.yqhome.instrumentapp;
 
 import android.app.ProgressDialog;
+import android.graphics.Rect;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -340,7 +341,11 @@ public class LearnContentActivity extends AppCompatActivity {
 
     private void playFollowPosition(float x,float y) throws JSONException {
         int contentTop = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
-        y = y - contentTop;
+        Rect frame = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        int statusBarHeight = frame.top;
+        y = y - contentTop - statusBarHeight;
+
         for (int i = 0; i < bp.size(); i++) {
             JSONObject element = bp.get(i);
             float top = (element.getInt("t")*scaleHeight)+pTop;
@@ -473,8 +478,6 @@ public class LearnContentActivity extends AppCompatActivity {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN){
-            Log.i(TAG,"getX:"+ev.getX());
-            Log.i(TAG,"getY:"+ev.getY());
             try {
                 playFollowPosition(ev.getX(),ev.getY());
             } catch (JSONException e) {

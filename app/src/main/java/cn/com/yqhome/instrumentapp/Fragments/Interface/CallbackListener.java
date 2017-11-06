@@ -56,4 +56,12 @@ public class CallbackListener {
     public void commentWriteCallback(){
 
     }
+
+    public void commentSupportCallback(){
+
+    }
+
+    public void collectCallback(){
+
+    }
 }

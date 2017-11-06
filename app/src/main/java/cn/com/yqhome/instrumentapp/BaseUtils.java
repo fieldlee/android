@@ -103,6 +103,8 @@ public class BaseUtils {
     public static final String LIVEURL = "/api/web/show";
     public static final String LEARNURL = "/api/web/score/mobile/";
     public static final String COMMENTURL = "/api/web/comment/";
+    public static final String COLLECTURL = "/api/web/collect";
+    public static final String COMMENTSupportURL = "/api/web/comment/support";
 
 
     public static String md5(String string) {

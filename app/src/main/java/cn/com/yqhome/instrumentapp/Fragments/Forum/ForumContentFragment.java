@@ -116,6 +116,18 @@ public class ForumContentFragment extends Fragment {
             }
         });
 
+        //        请求网络
+        RequestParams params = new RequestParams();
+        WebUtils.Forum(getActivity(),params,type,new CallbackListener(){
+            @Override
+            public void forumsCallback(List<Forum> forumList) {
+                for (int i = 0; i < forumList.size(); i++) {
+                    listForums.add(forumList.get(i));
+                }
+                mAdapter.setForumDatas(listForums);
+                recyclerView.hideShimmerAdapter();
+            }
+        });
     }
 
     private void setHeaderView(){
@@ -133,18 +145,7 @@ public class ForumContentFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //        请求网络
-        RequestParams params = new RequestParams();
-        WebUtils.Forum(getActivity(),params,type,new CallbackListener(){
-            @Override
-            public void forumsCallback(List<Forum> forumList) {
-                for (int i = 0; i < forumList.size(); i++) {
-                    listForums.add(forumList.get(i));
-                }
-                mAdapter.setForumDatas(listForums);
-                recyclerView.hideShimmerAdapter();
-            }
-        });
+
     }
 
     @Override

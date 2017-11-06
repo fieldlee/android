@@ -60,6 +60,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     private TextView replyTextView;
     private ImageButton collectBtn;
+    private ImageButton supportBtn;
     private ImageButton shareBtn;
 
     private EditText mCommentEdittext;
@@ -180,7 +181,14 @@ public class PlayerActivity extends AppCompatActivity {
         commentAdapter.supportlistener = new CommentAdapter.OnSupportClickListener(){
             @Override
             public void onSupportClick(String id) {
-
+                RequestParams params = new RequestParams();
+                params.add("id",id);
+                WebUtils.SupportComment(mPlayerActivity,params, new CallbackListener(){
+                    @Override
+                    public void commentSupportCallback() {
+                        commentAdapter.reloadDatas();
+                    }
+                });
             }
         };
         if (news != null){
@@ -194,6 +202,7 @@ public class PlayerActivity extends AppCompatActivity {
 //        回复评论按钮
         replyTextView = (TextView) findViewById(R.id.content_palyer_text);
         collectBtn = (ImageButton)findViewById(R.id.content_palyer_collection);
+        supportBtn = (ImageButton)findViewById(R.id.content_palyer_support);
         shareBtn = (ImageButton)findViewById(R.id.content_palyer_share);
 
         collectBtn.setImageResource(R.drawable.ic_music_note_white_24dp);
@@ -364,6 +373,63 @@ public class PlayerActivity extends AppCompatActivity {
                     edit_vg_lyt.setVisibility(View.VISIBLE);
                     replyLinearLayout.setVisibility(View.GONE);
                     onFocusChange(true);
+                    break;
+                case R.id.content_palyer_support:
+                    RequestParams paramsSupport = new RequestParams();
+                    if (news != null){
+                        paramsSupport.add("id",news.id);
+                    }
+                    if (forum != null){
+                        paramsSupport.add("id",forum.id);
+                    }
+
+                    WebUtils.SupportComment(PlayerActivity.this,paramsSupport,new CallbackListener(){
+                        @Override
+                        public void commentSupportCallback() {
+                            Toast toast=Toast.makeText(PlayerActivity.this, "您的赞，已收到", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return;
+                        }
+                    });
+                    break;
+                case R.id.content_palyer_collection:
+//                        "avatorPath": this.news.avatorPath,
+//                        "avator": this.news.avator,
+//                        "newsId": this.news._id,
+//                        "author": this.news.author,
+//                        "title": this.news.title,
+//                        "username": window.localStorage.getItem("username")
+                    RequestParams paramsNews = new RequestParams();
+                    if (news != null){
+
+                        paramsNews.put("avatorPath",news.avatorPath);
+                        paramsNews.put("avator",news.avator);
+                        paramsNews.put("newsId",news.id);
+                        paramsNews.put("author",news.author);
+                        paramsNews.put("title",news.title);
+                        paramsNews.put("username",BaseUtils.getUser(PlayerActivity.this).get("id").toString());
+
+                    }
+                    if (forum != null){
+
+                        paramsNews.put("avatorPath",forum.avatorPath);
+                        paramsNews.put("avator",forum.avator);
+                        paramsNews.put("forumId",forum.id);
+                        paramsNews.put("author",forum.author);
+                        paramsNews.put("title",forum.title);
+                        paramsNews.put("username",BaseUtils.getUser(PlayerActivity.this).get("id").toString());
+                    }
+
+                    WebUtils.Collect(PlayerActivity.this,paramsNews,new CallbackListener(){
+                        @Override
+                        public void collectCallback() {
+                            Toast toast=Toast.makeText(PlayerActivity.this, "已为您收藏该帖子", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return;
+                        }
+                    });
                     break;
             }
         }

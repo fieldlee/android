@@ -370,4 +370,44 @@ public class WebUtils {
             }
         });
     }
+
+    public static void SupportComment(final Activity activity,RequestParams params,final CallbackListener callbackListener){
+        client.post(BaseUtils.ROOTURL.concat(BaseUtils.COMMENTSupportURL),params,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    boolean status = response.getBoolean("success");
+                    if (status){
+                        callbackListener.commentSupportCallback();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+            }
+        });
+    }
+
+    public static void Collect(final Activity activity,RequestParams params,final CallbackListener callbackListener){
+        client.post(BaseUtils.ROOTURL.concat(BaseUtils.COLLECTURL),params,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    boolean status = response.getBoolean("success");
+                    if (status){
+                        callbackListener.collectCallback();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+            }
+        });
+    }
 }

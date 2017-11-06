@@ -7,11 +7,10 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:id="@+id/setup_info_listview"
-        android:divider="@color/bpDark_gray"
-        android:dividerHeight="1dp"
+        android:divider="@color/light_grey"
+        android:dividerHeight="0.5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </ListView>
 
 </LinearLayout>
