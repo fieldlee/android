@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.loopj.android.http.RequestParams;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -492,7 +494,16 @@ public class ContentAdapter extends BaseAdapter {
                         holderReComment.avatorImage.setImageBitmap(decodedByte);
                     }
                     else{
-                        Glide.with(mContext).load(recomObj.getString("avatorPath")).into(holderReComment.avatorImage);
+//                        Glide.with(mContext).load(recomObj.getString("avatorPath")).into(holderReComment.avatorImage);
+                        Glide.with(mContext).
+                                load(recomObj.getString("avatorPath")).
+                                diskCacheStrategy(DiskCacheStrategy.RESULT).
+                                thumbnail(0.5f).
+                                placeholder(R.drawable.material_flat).
+                                priority(Priority.LOW).
+                                error(R.drawable.material_flat).
+                                fallback(R.drawable.material_flat).
+                                into(holderReComment.avatorImage);
                     }
 
                 } catch (JSONException e) {
@@ -538,7 +549,16 @@ public class ContentAdapter extends BaseAdapter {
                         holderComment.avatorImage.setImageBitmap(decodedByte);
                     }
                     else{
-                        Glide.with(mContext).load(comObj.getString("avatorPath")).into(holderComment.avatorImage);
+                        Glide.with(mContext).
+                                load(comObj.getString("avatorPath")).
+                                diskCacheStrategy(DiskCacheStrategy.RESULT).
+                                thumbnail(0.5f).
+                                placeholder(R.drawable.material_flat).
+                                priority(Priority.LOW).
+                                error(R.drawable.material_flat).
+                                fallback(R.drawable.material_flat).
+                                into(holderComment.avatorImage);
+
                     }
 
                 } catch (JSONException e) {
@@ -586,7 +606,16 @@ public class ContentAdapter extends BaseAdapter {
                         holderHeader.avatorImageView.setImageBitmap(decodedByte);
                     }
                     else{
-                        Glide.with(mContext).load(news.avatorPath).into(holderHeader.avatorImageView);
+                        Glide.with(mContext).
+                                load(news.avatorPath).
+                                diskCacheStrategy(DiskCacheStrategy.RESULT).
+                                thumbnail(0.5f).
+                                placeholder(R.drawable.material_flat).
+                                priority(Priority.LOW).
+                                error(R.drawable.material_flat).
+                                fallback(R.drawable.material_flat).
+                                into(holderHeader.avatorImageView);
+//                        Glide.with(mContext).load(news.avatorPath).into(holderHeader.avatorImageView);
                     }
                 }
                 if (forum != null){
@@ -600,7 +629,16 @@ public class ContentAdapter extends BaseAdapter {
                         holderHeader.avatorImageView.setImageBitmap(decodedByte);
                     }
                     else{
-                        Glide.with(mContext).load(forum.avatorPath).into(holderHeader.avatorImageView);
+                        Glide.with(mContext).
+                                load(forum.avatorPath).
+                                diskCacheStrategy(DiskCacheStrategy.RESULT).
+                                thumbnail(0.5f).
+                                placeholder(R.drawable.material_flat).
+                                priority(Priority.LOW).
+                                error(R.drawable.material_flat).
+                                fallback(R.drawable.material_flat).
+                                into(holderHeader.avatorImageView);
+//                        Glide.with(mContext).load(forum.avatorPath).into(holderHeader.avatorImageView);
                     }
                 }
                 break;
@@ -609,7 +647,17 @@ public class ContentAdapter extends BaseAdapter {
                 break;
             case CELL_IMAGE:
 //                holderImage.imageview.setText(Html.fromHtml(ls[position]));
-                Glide.with(mContext).load(list.get(position-1).get("value")).into(holderImage.imageview);
+
+                Glide.with(mContext).
+                        load(list.get(position-1).get("value")).
+                        diskCacheStrategy(DiskCacheStrategy.RESULT).
+                        thumbnail(0.5f).
+                        placeholder(R.drawable.material_flat).
+                        priority(Priority.LOW).
+                        error(R.drawable.material_flat).
+                        fallback(R.drawable.material_flat).
+                        into(holderImage.imageview);
+//                Glide.with(mContext).load(list.get(position-1).get("value")).into(holderImage.imageview);
                 break;
 
         }

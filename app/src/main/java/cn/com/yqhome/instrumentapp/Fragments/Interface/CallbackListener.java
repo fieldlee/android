@@ -88,4 +88,8 @@ public class CallbackListener {
     public void getScoreCommentsCallback(List<JSONObject> learnslist){
 
     }
+
+    public void updateAvatorImageCallback(){
+
+    }
 }

@@ -24,6 +24,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,14 +37,22 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.loopj.android.http.RequestParams;
+
 import java.io.File;
+import java.util.Map;
 
 import cn.com.yqhome.instrumentapp.BaseUtils;
 import cn.com.yqhome.instrumentapp.BuildConfig;
 import cn.com.yqhome.instrumentapp.ClipImageActivity;
 import cn.com.yqhome.instrumentapp.FileUtil;
+import cn.com.yqhome.instrumentapp.Fragments.Interface.CallbackListener;
 import cn.com.yqhome.instrumentapp.MainActivity;
 import cn.com.yqhome.instrumentapp.R;
+import cn.com.yqhome.instrumentapp.WebUtils;
 
 /**
  * Created by depengli on 2017/9/8.
@@ -53,18 +62,15 @@ public class SetupFragment extends BaseFragment implements AppBarLayout.OnOffset
     private String TAG = "SetupFragment";
     private static final int PERCENTAGE_TO_ANIMATE_AVATAR = 50;
     private boolean mIsAvatarShown = true;
-
-
     private int mMaxScrollSize;
 
-    private TextView avatorView;
+    private TextView  avatorView;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private AppBarLayout appbarLayout;
     private SetupInfoFragment setupInfoFragment = new SetupInfoFragment();
     private CollectionFragment collectionFragment = new CollectionFragment();
     private TabsAdapter tabsAdapter;
-
 
     //请求相机
     private static final int REQUEST_CAPTURE = 100;
@@ -76,14 +82,10 @@ public class SetupFragment extends BaseFragment implements AppBarLayout.OnOffset
     private static final int READ_EXTERNAL_STORAGE_REQUEST_CODE = 103;
     //请求写入外部存储
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 104;
-
-    //头像2
-
+    //头像
     private ImageView mProfileImage;
     //调用照相机返回图片文件
     private File tempFile;
-    // 1: qq, 2: weixin
-    private int type;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,11 +110,13 @@ public class SetupFragment extends BaseFragment implements AppBarLayout.OnOffset
         avatorView = (TextView) v.findViewById(R.id.setup_info_avator);
 
         if (BaseUtils.getUser(getActivity()) != null){
-            if (BaseUtils.getUser(getActivity()).get("name") != null){
+            if (BaseUtils.getUser(getActivity()).get("name") != null && BaseUtils.getUser(getActivity()).get("name").toString() != ""){
                 avatorView.setText(BaseUtils.getUser(getActivity()).get("name").toString());
             }else{
-                if (BaseUtils.getUser(getActivity()).get("id") != null){
+                if (BaseUtils.getUser(getActivity()).get("id") != null && BaseUtils.getUser(getActivity()).get("id").toString() != ""){
                     avatorView.setText(BaseUtils.getUser(getActivity()).get("id").toString());
+                }else{
+                    avatorView.setText("未登录");
                 }
             }
         }
@@ -123,13 +127,38 @@ public class SetupFragment extends BaseFragment implements AppBarLayout.OnOffset
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadHeadImage();
+                if (BaseUtils.isLogin(getActivity())){
+                    uploadHeadImage();
+                }
             }
         });
+//        取头像信息
+        if (BaseUtils.getUser(getActivity()) != null){
+            Map userObj = BaseUtils.getUser(getActivity());
+            if (userObj.get("avatorImage") != null && userObj.get("avatorImage").toString() != ""){
+                if (userObj.get("avatorImage").toString().length()>500){
+                    String pureBase64Encoded = BaseUtils.getUser(getActivity()).get("avatorImage").toString().substring(BaseUtils.getUser(getActivity()).get("avatorImage").toString().indexOf(",")  + 1);
+                    byte[] decodedString = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    mProfileImage.setImageBitmap(decodedByte);
+                }else{
+                    Glide.with(getActivity()).
+                            load(BaseUtils.getUser(getActivity()).get("avatorImage").toString()).
+                            diskCacheStrategy(DiskCacheStrategy.RESULT).
+                            thumbnail(0.5f).
+                            placeholder(R.drawable.material_flat).
+                            priority(Priority.LOW).
+                            error(R.drawable.material_flat).
+                            fallback(R.drawable.material_flat).
+                            into(mProfileImage);
+//                    Glide.with(getActivity()).load(BaseUtils.getUser(getActivity()).get("avatorImage").toString()).into(mProfileImage);
+                }
+            }
+        }
 
         appbarLayout.addOnOffsetChangedListener(this);
         mMaxScrollSize = appbarLayout.getTotalScrollRange();
-
         tabsAdapter = new TabsAdapter(((MainActivity)getActivity()).getSupportFragmentManager(),setupInfoFragment,collectionFragment);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -329,6 +358,18 @@ public class SetupFragment extends BaseFragment implements AppBarLayout.OnOffset
                     String cropImagePath = FileUtil.getRealFilePathFromUri(getActivity(), uri);
                     Bitmap bitMap = BitmapFactory.decodeFile(cropImagePath);
                     mProfileImage.setImageBitmap(bitMap);
+
+//                    update avatorimage
+                    BaseUtils.saveUserImage(getActivity(),"data:image/jpeg;base64,"+BaseUtils.bitmapToBase64(bitMap));
+//                    update avator image backend
+                    RequestParams requestParams = new RequestParams();
+                    requestParams.put("data","data:image/jpeg;base64,"+BaseUtils.bitmapToBase64(bitMap));
+                    WebUtils.updateAvatorImage(getActivity(),BaseUtils.getUser(getActivity()).get("id").toString(),requestParams,new CallbackListener(){
+                        @Override
+                        public void updateAvatorImageCallback() {
+
+                        }
+                    });
                 }
                 break;
         }
@@ -344,7 +385,7 @@ public class SetupFragment extends BaseFragment implements AppBarLayout.OnOffset
         }
         Intent intent = new Intent();
         intent.setClass(getActivity(), ClipImageActivity.class);
-        intent.putExtra("type", type);
+        intent.putExtra("type", 2);
         intent.setData(uri);
         startActivityForResult(intent, REQUEST_CROP_PHOTO);
     }

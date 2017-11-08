@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import cn.com.yqhome.instrumentapp.BaseUtils;
 import cn.com.yqhome.instrumentapp.Class.Forum;
@@ -153,7 +155,16 @@ public class ItemHolder extends RecyclerView.ViewHolder {
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     avatorImage.setImageBitmap(decodedByte);
                 }else{
-                    Glide.with(this.itemView.getContext()).load(forum.avatorPath).into(avatorImage);
+                    Glide.with(this.itemView.getContext()).
+                            load(forum.avatorPath).
+                            diskCacheStrategy(DiskCacheStrategy.RESULT).
+                            thumbnail(0.5f).
+                            placeholder(R.drawable.material_flat).
+                            priority(Priority.LOW).
+                            error(R.drawable.material_flat).
+                            fallback(R.drawable.material_flat).
+                            into(avatorImage);
+
                 }
                 containerView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -181,7 +192,16 @@ public class ItemHolder extends RecyclerView.ViewHolder {
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     avatorImage.setImageBitmap(decodedByte);
                 }else{
-                    Glide.with(this.itemView.getContext()).load(forum.avatorPath).into(avatorImage);
+                    Glide.with(this.itemView.getContext()).
+                            load(forum.avatorPath).
+                            diskCacheStrategy(DiskCacheStrategy.RESULT).
+                            thumbnail(0.5f).
+                            placeholder(R.drawable.material_flat).
+                            priority(Priority.LOW).
+                            error(R.drawable.material_flat).
+                            fallback(R.drawable.material_flat).
+                            into(avatorImage);
+
                 }
                 containerView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -207,7 +227,16 @@ public class ItemHolder extends RecyclerView.ViewHolder {
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     avatorImage.setImageBitmap(decodedByte);
                 }else{
-                    Glide.with(this.itemView.getContext()).load(forum.avatorPath).into(avatorImage);
+                    Glide.with(this.itemView.getContext()).
+                            load(forum.avatorPath).
+                            diskCacheStrategy(DiskCacheStrategy.RESULT).
+                            thumbnail(0.5f).
+                            placeholder(R.drawable.material_flat).
+                            priority(Priority.LOW).
+                            error(R.drawable.material_flat).
+                            fallback(R.drawable.material_flat).
+                            into(avatorImage);
+
                 }
                 containerView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -236,7 +265,16 @@ public class ItemHolder extends RecyclerView.ViewHolder {
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     navatorImage.setImageBitmap(decodedByte);
                 }else{
-                    Glide.with(this.itemView.getContext()).load(forum.avatorPath).into(navatorImage);
+                    Glide.with(this.itemView.getContext()).
+                            load(forum.avatorPath).
+                            diskCacheStrategy(DiskCacheStrategy.RESULT).
+                            thumbnail(0.5f).
+                            placeholder(R.drawable.material_flat).
+                            priority(Priority.LOW).
+                            error(R.drawable.material_flat).
+                            fallback(R.drawable.material_flat).
+                            into(navatorImage);
+
                 }
 
                 containerView.setOnClickListener(new View.OnClickListener() {
@@ -268,7 +306,16 @@ public class ItemHolder extends RecyclerView.ViewHolder {
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     navatorImage.setImageBitmap(decodedByte);
                 }else{
-                    Glide.with(this.itemView.getContext()).load(forum.avatorPath).into(navatorImage);
+                    Glide.with(this.itemView.getContext()).
+                            load(forum.avatorPath).
+                            diskCacheStrategy(DiskCacheStrategy.RESULT).
+                            thumbnail(0.5f).
+                            placeholder(R.drawable.material_flat).
+                            priority(Priority.LOW).
+                            error(R.drawable.material_flat).
+                            fallback(R.drawable.material_flat).
+                            into(navatorImage);
+
                 }
                 containerView.setOnClickListener(new View.OnClickListener() {
                     @Override

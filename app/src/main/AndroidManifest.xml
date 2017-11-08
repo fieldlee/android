@@ -63,6 +63,7 @@
         <activity android:name=".ClipImageActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             />
+        <activity android:name=".InfoActivity"/>
     </application>
 
 </manifest>

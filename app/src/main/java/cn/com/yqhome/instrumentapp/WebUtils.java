@@ -552,6 +552,25 @@ public class WebUtils {
         });
     }
 
+    public static void updateAvatorImage(Activity activity,String id,RequestParams params, final CallbackListener callbackListener){
+        client.post(BaseUtils.ROOTURL.concat(BaseUtils.UPDATEAVATORIMAGEURL).concat(id),params,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    boolean status = response.getBoolean("success");
+                    if (status){
+                        callbackListener.updateAvatorImageCallback();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+            }
+        });
+    }
 }
 
 

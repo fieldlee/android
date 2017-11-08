@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+
+    android:layout_height="match_parent">
+    <ScrollView
+        android:background="@color/grey"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textAlignment="viewEnd"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:textColor="@color/bpDark_gray"
+                    android:text="昵称:"
+                    android:textSize="@dimen/news_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_weight="5"
+                    android:id="@+id/setup_info_edit_avator"
+                    android:textSize="@dimen/news_subtitle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bpDark_gray"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textAlignment="viewEnd"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:textColor="@color/bpDark_gray"
+                    android:text="邮箱:"
+                    android:textSize="@dimen/news_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_weight="5"
+                    android:id="@+id/setup_info_edit_email"
+                    android:textSize="@dimen/news_subtitle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bpDark_gray"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textAlignment="viewEnd"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:textColor="@color/bpDark_gray"
+                    android:text="喜欢乐器:"
+                    android:textSize="@dimen/news_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_weight="5"
+                    android:id="@+id/setup_info_edit_likeinstrument"
+                    android:textSize="@dimen/news_subtitle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bpDark_gray"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textAlignment="viewEnd"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:textColor="@color/bpDark_gray"
+                    android:text="省:"
+                    android:textSize="@dimen/news_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_weight="2"
+                    android:id="@+id/setup_info_edit_province"
+                    android:textSize="@dimen/news_subtitle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bpDark_gray"
+                    />
+                <TextView
+                    android:textAlignment="viewEnd"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:textColor="@color/bpDark_gray"
+                    android:text="市:"
+                    android:textSize="@dimen/news_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_weight="2"
+                    android:id="@+id/setup_info_edit_city"
+                    android:textSize="@dimen/news_subtitle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bpDark_gray"
+                    />
+                <TextView
+                    android:textAlignment="viewEnd"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:textColor="@color/bpDark_gray"
+                    android:text="区:"
+                    android:textSize="@dimen/news_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_weight="2"
+                    android:id="@+id/setup_info_edit_district"
+                    android:textSize="@dimen/news_subtitle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bpDark_gray"
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textAlignment="viewEnd"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:textColor="@color/bpDark_gray"
+                    android:text="地址:"
+                    android:textSize="@dimen/news_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_weight="5"
+                    android:id="@+id/setup_info_edit_address"
+                    android:textSize="@dimen/news_subtitle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bpDark_gray"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/setup_info_edit_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/news_subtitle"
+                    android:text="确认"
+                    android:background="@color/blue_app"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

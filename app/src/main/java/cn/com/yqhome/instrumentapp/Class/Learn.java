@@ -318,7 +318,9 @@ public class Learn implements Serializable {
             selection = selection +" )";
             selectionArgs = BaseUtils.TYPE_LEARNINSTRUMENT;
         }
-
+        Log.i("Learn",projection.toString());
+        Log.i("Learn",selection.toString());
+        Log.i("Learn",selectionArgs.toString());
 
         Cursor c = db.query(
                 LearnSqlName,                     // The table to query

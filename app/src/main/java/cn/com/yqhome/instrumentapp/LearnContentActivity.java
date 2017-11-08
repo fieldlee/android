@@ -28,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -194,15 +196,14 @@ public class LearnContentActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (isplaying == false ){
-                        if (prepared == false && isCompleted==true ){
-                            isCompleted = false;
+                        if (isCompleted==true && prepared==false){
                             mediaPlayer.prepareAsync();
+                        }else{
+                            mediaPlayer.start();
+                            isplaying = true;
+                            startRunnable();
+                            play.setImageResource(R.drawable.pause);
                         }
-                        mediaPlayer.start();
-                        isplaying = true;
-                        startRunnable();
-                        play.setImageResource(R.drawable.pause);
-
                     }else{
                         mediaPlayer.pause();
                         isplaying = false;
@@ -301,13 +302,13 @@ public class LearnContentActivity extends AppCompatActivity {
 
     private void playFollowTime(int curTime) throws JSONException {
         double preCurTime = (double) curTime / 1000.0;
-        Log.i(TAG,"preCurTime:"+preCurTime);
         if (bp != null){
             playLayer.setVisibility(View.VISIBLE);//显示
             for (int i = 0; i <pt.size() ; i++) {
+
                 if (i>=1){
                     if (preCurTime < pt.get(i).getInt("e") && preCurTime > pt.get(i-1).getInt("e")){
-                        if (currentItem != pt.get(i).getInt("p")){
+                        if (currentItem != pt.get(i).getInt("p")-1){
                             // 翻页
                             viewPager.setCurrentItem(pt.get(i).getInt("p")-1,true);
                         }
@@ -400,6 +401,7 @@ public class LearnContentActivity extends AppCompatActivity {
             }
         }
         if (mediaPlayer != null){
+            mediaPlayer.setLooping(true);
             mediaPlayer.reset();
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -408,6 +410,10 @@ public class LearnContentActivity extends AppCompatActivity {
                     mediaDuration = timeFormat(mediaPlayer.getDuration());
                     pDialog.cancel();
                     setPlayerTitleText();
+                    mediaPlayer.start();
+                    isplaying = true;
+                    startRunnable();
+                    play.setImageResource(R.drawable.pause);
                 }
             });
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
@@ -435,8 +441,6 @@ public class LearnContentActivity extends AppCompatActivity {
             mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
                 @Override
                 public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                    Log.i(TAG,"percent"+percent);
-
                     timeBar.setSecondaryProgress((int)(percent * mediaPlayer.getDuration()/100));
                 }
             });
@@ -509,6 +513,7 @@ public class LearnContentActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (mediaPlayer != null){
+            mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
             isplaying=false;
@@ -662,9 +667,27 @@ public class LearnContentActivity extends AppCompatActivity {
 
             if (learn.files != null && learn.files.size()>0){
                 if (learn.files.get(index).indexOf(getResources().getString(R.string.host))>0){
-                    Glide.with(mLearnContentActivity).load(learn.files.get(index)).into(imageview);
+                    Glide.with(mLearnContentActivity).
+                            load(learn.files.get(index)).
+                            diskCacheStrategy(DiskCacheStrategy.RESULT).
+                            thumbnail(0.5f).
+                            placeholder(R.drawable.material_flat).
+                            priority(Priority.LOW).
+                            error(R.drawable.material_flat).
+                            fallback(R.drawable.material_flat).
+                            into(imageview);
+
                 }else{
-                    Glide.with(mLearnContentActivity).load(BaseUtils.ROOTURL + learn.files.get(index)).into(imageview);
+                    Glide.with(mLearnContentActivity).
+                            load(BaseUtils.ROOTURL.concat(learn.files.get(index))).
+                            diskCacheStrategy(DiskCacheStrategy.RESULT).
+                            thumbnail(0.5f).
+                            placeholder(R.drawable.material_flat).
+                            priority(Priority.LOW).
+                            error(R.drawable.material_flat).
+                            fallback(R.drawable.material_flat).
+                            into(imageview);
+
                 }
             }
             return imageview;

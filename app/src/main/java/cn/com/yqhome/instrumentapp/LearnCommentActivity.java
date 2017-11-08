@@ -212,6 +212,11 @@ public class LearnCommentActivity extends AppCompatActivity implements View.OnCl
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.but_comment_send:        //发表评论按钮
+
+                    if (!BaseUtils.isLogin(LearnCommentActivity.this)){
+                        return;
+                    }
+
                     if (mCommentEdittext.getText().equals("")){
                         Toast toast=Toast.makeText(getParent(), "请输入评论内容", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
@@ -306,10 +311,6 @@ public class LearnCommentActivity extends AppCompatActivity implements View.OnCl
 
         if (isFocus==false){
             commentPid = null; //收缩后清空pid
-        }else{
-            if (!BaseUtils.isLogin(LearnCommentActivity.this)){
-                return;
-            }
         }
         (new Handler()).postDelayed(new Runnable() {
             public void run() {

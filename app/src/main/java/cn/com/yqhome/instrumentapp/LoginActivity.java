@@ -120,6 +120,9 @@ public class LoginActivity extends AppCompatActivity {
                         String username = userObject.getString("username");
                         String token = userObject.getString("token");
                         BaseUtils.saveUser(activity,avator,username,remember,password,token);
+//                        保存头像信息
+                        String avatorImage = userObject.getString("avatorPath");
+                        BaseUtils.saveUserImage(activity,avatorImage);
 
                         onLoginSuccess();//退出
                     }else{

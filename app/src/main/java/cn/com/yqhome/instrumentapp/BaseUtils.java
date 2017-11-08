@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.HandlerThread;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewParent;
@@ -29,6 +32,7 @@ import com.loopj.android.http.ResponseHandlerInterface;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
@@ -115,6 +119,7 @@ public class BaseUtils {
     public static final String LearnWriteCommentURL = "/api/web/scorecomment";
     public static final String LearnSupportCommentURL = "/api/web/scorecomment/support";
 
+    public static final String UPDATEAVATORIMAGEURL = "/api/auth/user/update/avator/";
 
     public static String md5(String string) {
         byte[] hash = new byte[0];
@@ -194,7 +199,7 @@ public class BaseUtils {
     }
 
     public static void saveUserImage(Activity activity,String avatorImage){
-        SharedPreferences.Editor sharedata = activity.getSharedPreferences("user",0).edit();
+        SharedPreferences.Editor sharedata = activity.getSharedPreferences("user",Context.MODE_PRIVATE).edit();
         sharedata.putString("avatorImage",avatorImage);
         sharedata.commit();
     }
@@ -214,7 +219,7 @@ public class BaseUtils {
         SharedPreferences sharedData = activity.getSharedPreferences("user",Context.MODE_PRIVATE);
         objUser.put("name",sharedData.getString("name","")) ;
         objUser.put("id",sharedData.getString("id","")) ;
-        objUser.put("image",sharedData.getString("image","")) ;
+        objUser.put("avatorImage",sharedData.getString("avatorImage","")) ;
         objUser.put("remember",sharedData.getBoolean("remember",false));
         objUser.put("password",sharedData.getString("password","")) ;
         objUser.put("token",sharedData.getString("token","")) ;
@@ -290,5 +295,49 @@ public class BaseUtils {
             return  false;
 
         }
+    }
+
+    /**
+     * bitmap转为base64
+     * @param bitmap
+     * @return
+     */
+    public static String bitmapToBase64(Bitmap bitmap) {
+        String result = null;
+        ByteArrayOutputStream baos = null;
+        try {
+            if (bitmap != null) {
+                baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+
+                baos.flush();
+                baos.close();
+
+                byte[] bitmapBytes = baos.toByteArray();
+                result = Base64.encodeToString(bitmapBytes, Base64.DEFAULT);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (baos != null) {
+                    baos.flush();
+                    baos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    /**
+     * base64转为bitmap
+     * @param base64Data
+     * @return
+     */
+    public static Bitmap base64ToBitmap(String base64Data) {
+        byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 }

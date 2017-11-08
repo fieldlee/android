@@ -33,6 +33,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.johnpersano.supertoasts.library.Style;
 import com.github.johnpersano.supertoasts.library.SuperActivityToast;
 import com.loopj.android.http.RequestParams;
@@ -401,9 +403,25 @@ public class HomeFragment extends BaseFragment {
             container.addView(imageview);
             if (adslist.size()>0){
                 if (adslist.get(index).path.indexOf(getResources().getString(R.string.host))>0){
-                    Glide.with(getActivity()).load(adslist.get(index).path).into(imageview);
+                    Glide.with(getActivity()).
+                            load(adslist.get(index).path).
+                            diskCacheStrategy(DiskCacheStrategy.RESULT).
+                            thumbnail(0.5f).
+                            placeholder(R.drawable.material_flat).
+                            priority(Priority.LOW).
+                            error(R.drawable.material_flat).
+                            fallback(R.drawable.material_flat).
+                            into(imageview);
                 }else{
-                    Glide.with(getActivity()).load(BaseUtils.ROOTURL + adslist.get(index).path).into(imageview);
+                    Glide.with(getActivity()).
+                            load(BaseUtils.ROOTURL.concat(adslist.get(index).path) ).
+                            diskCacheStrategy(DiskCacheStrategy.RESULT).
+                            thumbnail(0.5f).
+                            placeholder(R.drawable.material_flat).
+                            priority(Priority.LOW).
+                            error(R.drawable.material_flat).
+                            fallback(R.drawable.material_flat).
+                            into(imageview);
                 }
             }
             return imageview;

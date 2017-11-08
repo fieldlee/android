@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import cn.com.yqhome.instrumentapp.BaseUtils;
 import cn.com.yqhome.instrumentapp.Class.Forum;
@@ -56,15 +58,40 @@ public class LiveHolder extends RecyclerView.ViewHolder {
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             nAvatorImage.setImageBitmap(decodedByte);
         }else{
+            Glide.with(containerView.getContext()).
+                    load(live.avatorPath).
+                    diskCacheStrategy(DiskCacheStrategy.RESULT).
+                    thumbnail(0.5f).
+                    placeholder(R.drawable.material_flat).
+                    priority(Priority.LOW).
+                    error(R.drawable.material_flat).
+                    fallback(R.drawable.material_flat).
+                    into(nAvatorImage);
 
-            Glide.with(containerView.getContext()).load(live.avatorPath).into(nAvatorImage);
         }
         if (live.image.indexOf(R.string.host)>=0){
-            Glide.with(containerView.getContext()).load(live.image).into(nliveImage);
+            Glide.with(containerView.getContext()).
+                    load(live.image).
+                    diskCacheStrategy(DiskCacheStrategy.RESULT).
+                    thumbnail(0.5f).
+                    placeholder(R.drawable.material_flat).
+                    priority(Priority.LOW).
+                    error(R.drawable.material_flat).
+                    fallback(R.drawable.material_flat).
+                    into(nliveImage);
+
         }else{
             String host = "http://" + containerView.getContext().getResources().getString(R.string.host) +":"+containerView.getContext().getResources().getString(R.string.port);
             String imageUrl = host + live.image;
-            Glide.with(containerView.getContext()).load(imageUrl).into(nliveImage);
+            Glide.with(containerView.getContext()).
+                    load(imageUrl).
+                    diskCacheStrategy(DiskCacheStrategy.RESULT).
+                    thumbnail(0.5f).
+                    placeholder(R.drawable.material_flat).
+                    priority(Priority.LOW).
+                    error(R.drawable.material_flat).
+                    fallback(R.drawable.material_flat).
+                    into(nliveImage);
         }
         containerView.setOnClickListener(new View.OnClickListener() {
             @Override

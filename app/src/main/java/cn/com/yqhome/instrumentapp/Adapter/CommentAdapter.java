@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
@@ -296,7 +298,16 @@ public class CommentAdapter extends BaseAdapter {
                         holderSubForum.avatorImage.setImageBitmap(decodedByte);
                     }
                     else{
-                        Glide.with(mContext).load(tmpreObj.getString("avatorPath")).into(holderSubForum.avatorImage);
+                        Glide.with(mContext).
+                                load(tmpreObj.getString("avatorPath")).
+                                diskCacheStrategy(DiskCacheStrategy.RESULT).
+                                thumbnail(0.5f).
+                                placeholder(R.drawable.material_flat).
+                                priority(Priority.LOW).
+                                error(R.drawable.material_flat).
+                                fallback(R.drawable.material_flat).
+                                into(holderSubForum.avatorImage);
+//                        Glide.with(mContext).load(tmpreObj.getString("avatorPath")).into(holderSubForum.avatorImage);
                     }
 
                 } catch (JSONException e) {
@@ -337,7 +348,16 @@ public class CommentAdapter extends BaseAdapter {
                             holderForum.avatorImage.setImageBitmap(decodedByte);
                         }
                         else{
-                            Glide.with(mContext).load(tmpObj.getString("avatorPath")).into(holderForum.avatorImage);
+                            Glide.with(mContext).
+                                    load(tmpObj.getString("avatorPath")).
+                                    diskCacheStrategy(DiskCacheStrategy.RESULT).
+                                    thumbnail(0.5f).
+                                    placeholder(R.drawable.material_flat).
+                                    priority(Priority.LOW).
+                                    error(R.drawable.material_flat).
+                                    fallback(R.drawable.material_flat).
+                                    into(holderForum.avatorImage);
+//                            Glide.with(mContext).load(tmpObj.getString("avatorPath")).into(holderForum.avatorImage);
                         }
 
                     } catch (JSONException e) {
