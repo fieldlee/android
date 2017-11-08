@@ -244,7 +244,7 @@ public class Ads {
                 ads.path = c.getString(tagindex);
 //            value
                 int topupindex = c.getColumnIndex(AdsEntry.Ads_Value);
-                ads.path = c.getString(topupindex);
+                ads.value = c.getString(topupindex);
 //            Ads_StartTime
                 int authorindex = c.getColumnIndex(AdsEntry.Ads_StartTime);
                 ads.startTime = c.getLong(authorindex);

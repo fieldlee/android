@@ -371,6 +371,46 @@ public class WebUtils {
         });
     }
 
+    public static void WriteLearnComment(final Activity activity,RequestParams params,final CallbackListener callbackListener){
+        client.post(BaseUtils.ROOTURL.concat(BaseUtils.LearnWriteCommentURL),params,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    boolean status = response.getBoolean("success");
+                    if (status){
+                        callbackListener.commentWriteCallback();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+            }
+        });
+    }
+
+    public static void SupportLearn(final Activity activity,RequestParams params,final CallbackListener callbackListener){
+        client.post(BaseUtils.ROOTURL.concat(BaseUtils.LearnSupportCommentURL),params,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    boolean status = response.getBoolean("success");
+                    if (status){
+                        callbackListener.commentSupportCallback();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+            }
+        });
+    }
+
     public static void SupportComment(final Activity activity,RequestParams params,final CallbackListener callbackListener){
         client.post(BaseUtils.ROOTURL.concat(BaseUtils.COMMENTSupportURL),params,new JsonHttpResponseHandler(){
             @Override
@@ -410,4 +450,108 @@ public class WebUtils {
             }
         });
     }
+
+    public static void getCollections(Activity activity, String username, final CallbackListener callbackListener){
+        client.get(BaseUtils.ROOTURL.concat(BaseUtils.GETCOLLECTURL).concat(username), new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    boolean status = response.getBoolean("success");
+                    if (status){
+                        JSONArray objs = response.getJSONArray("results");
+                        List<JSONObject> tmpCommentsList = new ArrayList<JSONObject>();
+                        for (int i = 0; i <objs.length() ; i++) {
+                            JSONObject obj = objs.getJSONObject(i);
+                            tmpCommentsList.add(obj);
+                        }
+                        callbackListener.getCollectionsCallback(tmpCommentsList);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+            }
+        });
+    }
+
+
+    public static void getNewsByID(String id, final CallbackListener callbackListener){
+        client.get(BaseUtils.ROOTURL.concat(BaseUtils.NEWSByIdURL).concat(id),new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    boolean status = response.getBoolean("success");
+                    if (status){
+                        JSONObject newsJson = response.getJSONObject("data");
+                        News news = new  News(newsJson);
+                        callbackListener.getNewCallback(news);
+                    }else{
+                        callbackListener.getNewNoCallback(response.getString("message"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+            }
+        });
+    }
+
+    public static void getForumByID(String id,final CallbackListener callbackListener){
+        client.get(BaseUtils.ROOTURL.concat(BaseUtils.FORUMByIdURL).concat(id),new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    boolean status = response.getBoolean("success");
+                    if (status){
+                        JSONObject forumJson = response.getJSONObject("data");
+                        Forum forum = new Forum(forumJson);
+                        callbackListener.getForumCallback(forum);
+                    }else{
+                        callbackListener.getNewNoCallback(response.getString("message"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+            }
+        });
+    }
+
+    public static void getLearnComment(Activity activity,String id,final CallbackListener callbackListener){
+        client.get(BaseUtils.ROOTURL.concat(BaseUtils.LearnCommentByIDURL).concat(id),new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    boolean status = response.getBoolean("success");
+                    if (status){
+                        JSONArray objs = response.getJSONArray("results");
+                        List<JSONObject> tmpCommentsList = new ArrayList<JSONObject>();
+                        for (int i = 0; i <objs.length() ; i++) {
+                            JSONObject obj = objs.getJSONObject(i);
+                            tmpCommentsList.add(obj);
+                        }
+                        callbackListener.getScoreCommentsCallback(tmpCommentsList);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+            }
+        });
+    }
+
 }
+
+

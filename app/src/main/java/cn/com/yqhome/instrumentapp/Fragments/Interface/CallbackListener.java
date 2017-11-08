@@ -64,4 +64,28 @@ public class CallbackListener {
     public void collectCallback(){
 
     }
+
+    public void getCollectionsCallback(List<JSONObject> collectionslist){
+
+    }
+
+    public void getNewCallback(News news){
+
+    }
+
+    public void getNewNoCallback(String message){
+
+    }
+
+    public void getForumCallback(Forum forum){
+
+    }
+
+    public void getForumNoCallback(String message){
+
+    }
+
+    public void getScoreCommentsCallback(List<JSONObject> learnslist){
+
+    }
 }

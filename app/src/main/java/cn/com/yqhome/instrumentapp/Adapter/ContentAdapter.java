@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 import cn.com.yqhome.instrumentapp.BaseUtils;
 import cn.com.yqhome.instrumentapp.Class.Comment;
 import cn.com.yqhome.instrumentapp.Class.Forum;
+import cn.com.yqhome.instrumentapp.Class.Learn;
 import cn.com.yqhome.instrumentapp.Class.News;
 import cn.com.yqhome.instrumentapp.Fragments.Adapters.ForumAdapter;
 import cn.com.yqhome.instrumentapp.Fragments.Interface.CallbackListener;
@@ -60,6 +61,7 @@ public class ContentAdapter extends BaseAdapter {
     private String contentString;
     private News news;
     private Forum forum;
+    private Learn learn;
     private ContentAdapter mContentAdapter;
 
     public interface OnCommentClickListener {
@@ -71,7 +73,12 @@ public class ContentAdapter extends BaseAdapter {
 
     public OnCommentClickListener commentlistener;
     public OnSupportClickListener supportlistener;
-
+    public ContentAdapter(Context context,Activity activity){
+        mContext = context;
+        mActivity = activity;
+        mContentAdapter = this;
+        list = new ArrayList<>();
+    }
     public ContentAdapter(Context context,Activity activity,
                           String contentHtml
                             ) {
@@ -95,6 +102,35 @@ public class ContentAdapter extends BaseAdapter {
         mContext = context;
         mActivity = activity;
         mContentAdapter = this;
+    }
+    public void setLearn(Learn learn){
+        this.learn = learn;
+        WebUtils.getLearnComment(mActivity,this.learn.id,new CallbackListener(){
+            @Override
+            public void getScoreCommentsCallback(List<JSONObject> learnslist) {
+                for (int i = 0; i < learnslist.size(); i++) {
+                    JSONObject comJson = learnslist.get(i);
+                    try {
+                        comJson.put("isSub",false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    comments.add(comJson); //添加
+                    try {
+                        if (comJson.getJSONArray("subComments") != null && comJson.getJSONArray("subComments").length()>0){
+                            for (int j = 0; j < comJson.getJSONArray("subComments").length(); j++) {
+                                JSONObject subComJson = comJson.getJSONArray("subComments").getJSONObject(j);
+                                subComJson.put("isSub",true); //Sub 添加
+                                comments.add(subComJson); //添加
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                mContentAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public void setNews(News news) {
@@ -215,16 +251,51 @@ public class ContentAdapter extends BaseAdapter {
                 }
             });
         }
+
+        if (learn != null){
+            WebUtils.getLearnComment(mActivity,this.learn.id,new CallbackListener(){
+                @Override
+                public void getScoreCommentsCallback(List<JSONObject> learnslist) {
+                    for (int i = 0; i < learnslist.size(); i++) {
+                        JSONObject comJson = learnslist.get(i);
+                        try {
+                            comJson.put("isSub",false);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        comments.add(comJson); //添加
+                        try {
+                            if (comJson.getJSONArray("subComments") != null && comJson.getJSONArray("subComments").length()>0){
+                                for (int j = 0; j < comJson.getJSONArray("subComments").length(); j++) {
+                                    JSONObject subComJson = comJson.getJSONArray("subComments").getJSONObject(j);
+                                    subComJson.put("isSub",true); //Sub 添加
+                                    comments.add(subComJson); //添加
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    mContentAdapter.notifyDataSetChanged();
+                }
+            });
+        }
     }
 
     @Override
     public int getCount() {
         //适配header
+        if (list.size()==0){
+            return comments.size();
+        }
         return list.size() + 2 + comments.size();
     }
 
     @Override
     public Object getItem(int position) {
+        if (list.size()==0){
+            return comments.get(position);
+        }
         //适配header
         if (position>=list.size()+1 && position <= list.size()+comments.size()){
             return comments.get(position-(list.size()+1));
@@ -242,6 +313,20 @@ public class ContentAdapter extends BaseAdapter {
     }
 
     public int getItemViewType(int position) {
+
+        if (list.size()==0){
+            JSONObject tmpJsonObj = comments.get(position);
+            try {
+                if (tmpJsonObj.getBoolean("isSub")==false){
+                    return CELL_COMMENT;
+                }else{
+                    return CELL_RECOMMENT;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
         if (position==0){
             return CELL_HEADER;
         }else{
@@ -375,7 +460,13 @@ public class ContentAdapter extends BaseAdapter {
         // 设置资源
         switch (type) {
             case CELL_RECOMMENT:
-                JSONObject recomObj = comments.get(position-list.size()-2);
+                JSONObject recomObj;
+                if (list.size()==0){
+                    recomObj = comments.get(position);
+                }else{
+                    recomObj = comments.get(position-list.size()-2);
+                }
+
                 try {
                     holderReComment.avator.setText(recomObj.getString("avator"));
                 } catch (JSONException e) {
@@ -409,7 +500,13 @@ public class ContentAdapter extends BaseAdapter {
                 }
                 break;
             case CELL_COMMENT:
-                final JSONObject comObj = comments.get(position-list.size()-2);
+                final JSONObject comObj;
+                if (list.size()==0){
+                    comObj = comments.get(position);
+                }else{
+                    comObj = comments.get(position-list.size()-2);
+                }
+
                 try {
                     holderComment.avator.setText(comObj.getString("avator"));
                 } catch (JSONException e) {

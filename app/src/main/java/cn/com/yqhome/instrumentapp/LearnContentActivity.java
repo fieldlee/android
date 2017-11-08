@@ -1,11 +1,13 @@
 package cn.com.yqhome.instrumentapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -52,7 +54,8 @@ public class LearnContentActivity extends AppCompatActivity {
     private boolean isplaying = false;
     private boolean kill = false;
     private boolean prepared = false;
-
+    private boolean isCompleted = false;
+    private FloatingActionButton actionButton;
 
     private ProgressDialog pDialog;
     private MediaPlayer mediaPlayer;
@@ -151,7 +154,17 @@ public class LearnContentActivity extends AppCompatActivity {
         play = (ImageButton) findViewById(R.id.content_learn_play);
         timeBar = (SeekBar) findViewById(R.id.content_learn_timeBar);
         playerTime = (TextView) findViewById(R.id.content_learn_playTime);
-
+        actionButton = (FloatingActionButton)findViewById(R.id.learn_content_actionBtn);
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(BaseUtils.INTENT_LEARN,learn);
+                Intent intent = new Intent(LearnContentActivity.this, LearnCommentActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
         playLayer = (View) findViewById(R.id.learn_content_layer);
         playLayer.setVisibility(View.GONE);
 //
@@ -181,17 +194,15 @@ public class LearnContentActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (isplaying == false ){
-                        if (prepared){
-                            try {
-                                mediaPlayer.prepare();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            mediaPlayer.start();
-                            isplaying = true;
-                            startRunnable();
-                            play.setImageResource(R.drawable.pause);
+                        if (prepared == false && isCompleted==true ){
+                            isCompleted = false;
+                            mediaPlayer.prepareAsync();
                         }
+                        mediaPlayer.start();
+                        isplaying = true;
+                        startRunnable();
+                        play.setImageResource(R.drawable.pause);
+
                     }else{
                         mediaPlayer.pause();
                         isplaying = false;
@@ -204,7 +215,6 @@ public class LearnContentActivity extends AppCompatActivity {
         else{
             palyContrainer.setVisibility(View.GONE);
         }
-
 
 //        dialog
         pDialog = new ProgressDialog(LearnContentActivity.this);
@@ -383,9 +393,14 @@ public class LearnContentActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        if (mediaPlayer == null){
+            if (learn.mp3 != null && learn.mp3.get("path")!= null) {
+                mediaPlayer = new MediaPlayer();
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            }
+        }
         if (mediaPlayer != null){
             mediaPlayer.reset();
-//        mediaPlayer = MediaPlayer.create(this,Uri.parse("http://downloads.bbc.co.uk/learningenglish/features/tews/170905_tews_it_beats_me_download.mp3"));
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
@@ -408,6 +423,8 @@ public class LearnContentActivity extends AppCompatActivity {
                     stopRunnable();
                     mediaPlayer.stop();
                     isplaying = false;
+                    prepared = false;
+                    isCompleted = true;
                     //初始化timebar and time show
                     timeBar.setProgress(0);
                     playerTime.setText("0.00/"+mediaDuration);
@@ -461,6 +478,30 @@ public class LearnContentActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mediaPlayer != null){
+            mediaPlayer.release();
+            mediaPlayer = null;
+            isplaying=false;
+            prepared = false;
+            stopRunnable();
+            //初始化timebar and time show
+            if (timeBar != null){
+                timeBar.setProgress(0);
+            }
+            if (playerTime != null){
+                playerTime.setText("0.00/"+mediaDuration);
+            }
+            if (play != null){
+                play.setImageResource(R.drawable.play);
+            }
+
+        }
+    }
+
     /**
      * onDestroy
      */

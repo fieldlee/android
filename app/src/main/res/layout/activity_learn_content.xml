@@ -71,7 +71,7 @@
                 android:id="@+id/content_learn_timeBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:secondaryProgressTint="@color/bpDarker_red"
+                android:secondaryProgressTint="@color/light_grey"
                 />
 
             <TextView
@@ -107,4 +107,20 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/learn_content_actionBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="10dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/learn_content_viewpager"
+        app:layout_constraintRight_toRightOf="@id/learn_content_viewpager"
+        android:src="@drawable/ic_account_white_24dp"
+        app:layout_anchor="@id/learn_content_viewpager"
+        app:layout_anchorGravity="bottom|right|end"
+     />
+
 </android.support.constraint.ConstraintLayout>

@@ -74,6 +74,8 @@ public class BaseUtils {
     public static final String INTENT_Live = "INTENTLIVE";
     public static final String INTENT_LEARN = "INTENTLEARN";
 
+    public static final String INTENT_LOADURL = "WebPageUrl";
+
     public static final String TYPE_ITEM_FORUM = "Forum";
     public static final String TYPE_ITEM_NEWS = "News";
     public static final String TYPE_ITEM_LEARN = "Learn";
@@ -104,7 +106,14 @@ public class BaseUtils {
     public static final String LEARNURL = "/api/web/score/mobile/";
     public static final String COMMENTURL = "/api/web/comment/";
     public static final String COLLECTURL = "/api/web/collect";
+    public static final String GETCOLLECTURL = "/api/web/collect/";
     public static final String COMMENTSupportURL = "/api/web/comment/support";
+
+    public static final String NEWSByIdURL = "/api/web/news/byid/";
+    public static final String FORUMByIdURL = "/api/web/forum/sub/byid/";
+    public static final String LearnCommentByIDURL = "/api/web/scorecomment/";
+    public static final String LearnWriteCommentURL = "/api/web/scorecomment";
+    public static final String LearnSupportCommentURL = "/api/web/scorecomment/support";
 
 
     public static String md5(String string) {

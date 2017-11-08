@@ -2,9 +2,12 @@ package cn.com.yqhome.instrumentapp.Fragments;
 
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,16 +18,23 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.johnpersano.supertoasts.library.Style;
+import com.github.johnpersano.supertoasts.library.SuperActivityToast;
 import com.loopj.android.http.RequestParams;
 
 import java.io.BufferedInputStream;
@@ -39,11 +49,16 @@ import java.util.concurrent.TimeUnit;
 
 import cn.com.yqhome.instrumentapp.BaseUtils;
 import cn.com.yqhome.instrumentapp.Class.Ads;
+import cn.com.yqhome.instrumentapp.Class.Forum;
+import cn.com.yqhome.instrumentapp.Class.News;
+import cn.com.yqhome.instrumentapp.ContextActivity;
 import cn.com.yqhome.instrumentapp.DatabaseHelper;
 import cn.com.yqhome.instrumentapp.Fragments.Home.HomeContextFragment;
 import cn.com.yqhome.instrumentapp.Fragments.Interface.CallbackListener;
 import cn.com.yqhome.instrumentapp.MainActivity;
+import cn.com.yqhome.instrumentapp.PlayerActivity;
 import cn.com.yqhome.instrumentapp.R;
+import cn.com.yqhome.instrumentapp.WebActivity;
 import cn.com.yqhome.instrumentapp.WebUtils;
 
 /**
@@ -90,14 +105,25 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initData(final View v){
-        RequestParams params = new RequestParams();
-        WebUtils.Ads(this.getActivity(),params, new CallbackListener(){
-            @Override
-            public void adsCallback(List<Ads> adslist) {
-                initAdsView(v,adslist);
-            }
-        });
-
+        if (this.adslist.size() == 0){
+            RequestParams params = new RequestParams();
+            WebUtils.Ads(this.getActivity(),params, new CallbackListener(){
+                @Override
+                public void adsCallback(List<Ads> adslist) {
+                    initAdsView(v,adslist);
+                }
+            });
+        }
+        else{
+            initAdsView(v,this.adslist);
+            RequestParams params = new RequestParams();
+            WebUtils.Ads(this.getActivity(),params, new CallbackListener(){
+                @Override
+                public void adsCallback(List<Ads> adslist) {
+//                    initAdsView(v,adslist);
+                }
+            });
+        }
     }
 
     private void initAdsView(View v,List<Ads> adslist){
@@ -129,7 +155,6 @@ public class HomeFragment extends BaseFragment {
             }
         }
         mPagerAdapter.notifyDataSetChanged();
-//        viewPager.setAdapter(new GalleryAdapter());
         int firstPage = Integer.MAX_VALUE / 2 / adslist.size() * adslist.size();
         currentItem = 0;
         viewPager.setCurrentItem(currentItem, false);
@@ -151,12 +176,95 @@ public class HomeFragment extends BaseFragment {
         mPagerAdapter = new GalleryAdapter();
         viewPager.setAdapter(mPagerAdapter);
         viewPager.setCurrentItem(0, false);
+        currentItem = 0;
 
-        viewPager.setOnClickListener(new View.OnClickListener() {
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            float oldX = 0, newX = 0, sens = 5;
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            oldX = event.getX();
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            newX = event.getX();
+                            if (Math.abs(oldX - newX) < sens) {
+                                Ads tmpAds = adslist.get(currentItem);
+                                if (tmpAds.type.endsWith("url")){
+                                    Intent webintent = new Intent(getActivity(),WebActivity.class);
+                                    webintent.putExtra(BaseUtils.INTENT_LOADURL,tmpAds.value);
+                                    startActivity(webintent);
+                                }
+                                if (tmpAds.type.endsWith("news")){
+                                    WebUtils.getNewsByID(tmpAds.value,new CallbackListener(){
+                                        @Override
+                                        public void getNewCallback(News news) {
+                                            if (news.videos == null || news.videos.length == 0){
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable(BaseUtils.INTENT_NEWS_CONTEXT,news);
+                                                Intent intent = new Intent(getActivity(), ContextActivity.class);
+                                                intent.putExtras(bundle);
+                                                startActivity(intent);
+                                            }else{
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable(BaseUtils.INTENT_NEWS_VIDEO,news);
+                                                Intent intent = new Intent(getActivity(), PlayerActivity.class);
+                                                intent.putExtras(bundle);
+                                                startActivity(intent);
+                                            }
+                                        }
 
-            }
+                                        @Override
+                                        public void getNewNoCallback(String message) {
+//                                            SuperActivityToast.create(getActivity(),new Style(),Style.TYPE_STANDARD)
+//                                                    .setText(message)
+//                                                    .setColor(Color.WHITE)
+//                                                    .setDuration(Style.DURATION_LONG)
+//                                                    .setAnimations(Style.ANIMATIONS_POP)
+//                                                    .show();
+                                            Toast toast=Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
+                                            toast.setGravity(Gravity.CENTER, 0, 0);
+                                            toast.show();
+                                            return;
+                                        }
+                                    });
+                                }
+                                if (tmpAds.type.endsWith("forum")){
+                                    WebUtils.getForumByID(tmpAds.value,new CallbackListener(){
+                                        @Override
+                                        public void getForumCallback(Forum forum) {
+                                            if (forum.videos == null || forum.videos.length == 0){
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable(BaseUtils.INTENT_FORUM_CONTEXT,forum);
+                                                Intent intent = new Intent(getActivity(), ContextActivity.class);
+                                                intent.putExtras(bundle);
+                                                startActivity(intent);
+                                            }else{
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable(BaseUtils.INTENT_FORUM_VIDEO,forum);
+                                                Intent intent = new Intent(getActivity(), PlayerActivity.class);
+                                                intent.putExtras(bundle);
+                                                startActivity(intent);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void getForumNoCallback(String message) {
+                                            Toast toast=Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
+                                            toast.setGravity(Gravity.CENTER, 0, 0);
+                                            toast.show();
+                                            return;
+                                        }
+                                    });
+                                }
+                                return false;
+                            }
+                            oldX = 0;
+                            newX = 0;
+                            break;
+                    }
+                    return false;
+                }
         });
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -165,6 +273,7 @@ public class HomeFragment extends BaseFragment {
             }
             @Override
             public void onPageSelected(int position) {
+                currentItem = position;
                 if (adslist.size()>0) {
                     int index = position % adslist.size();
                     for (int i = 0; i < dotList.size(); i++) {
@@ -182,8 +291,6 @@ public class HomeFragment extends BaseFragment {
 
             }
         });
-
-
 
         listFragments = new ArrayList<Fragment>();
         for (int i = 0; i < 1 ; i++) {
@@ -257,17 +364,6 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
-    private View getTabView(int index) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.home_tab_item, null);
-
-        ImageView image = (ImageView) view.findViewById(R.id.image);
-        TextView title = (TextView) view.findViewById(R.id.title);
-
-        image.setImageResource(mImages[index]);
-        title.setText(mTitles[index]);
-
-        return view;
-    }
 
     private class GalleryAdapter extends PagerAdapter{
         private int mChildCount = 0;
@@ -372,4 +468,5 @@ public class HomeFragment extends BaseFragment {
         }
         return bm;
     }
+
 }
