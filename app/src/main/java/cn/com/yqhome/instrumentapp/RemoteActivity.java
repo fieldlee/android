@@ -185,6 +185,11 @@ public class RemoteActivity extends Activity implements WebRtcClient.RtcListener
 
     }
 
+    @Override
+    public void onReceiveMessage(JSONObject msgObj) {
+
+    }
+
     //    public void answer(String callerId) throws JSONException {
 //        client.sendMessage(callerId, "init", null);
 //        startCam();

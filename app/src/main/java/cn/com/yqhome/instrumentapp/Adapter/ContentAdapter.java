@@ -499,10 +499,10 @@ public class ContentAdapter extends BaseAdapter {
                                 load(recomObj.getString("avatorPath")).
                                 diskCacheStrategy(DiskCacheStrategy.RESULT).
                                 thumbnail(0.5f).
-                                placeholder(R.drawable.material_flat).
+                                placeholder(R.drawable.user_avatar).
                                 priority(Priority.LOW).
-                                error(R.drawable.material_flat).
-                                fallback(R.drawable.material_flat).
+                                error(R.drawable.user_avatar).
+                                fallback(R.drawable.user_avatar).
                                 into(holderReComment.avatorImage);
                     }
 
@@ -553,10 +553,10 @@ public class ContentAdapter extends BaseAdapter {
                                 load(comObj.getString("avatorPath")).
                                 diskCacheStrategy(DiskCacheStrategy.RESULT).
                                 thumbnail(0.5f).
-                                placeholder(R.drawable.material_flat).
+                                placeholder(R.drawable.user_avatar).
                                 priority(Priority.LOW).
-                                error(R.drawable.material_flat).
-                                fallback(R.drawable.material_flat).
+                                error(R.drawable.user_avatar).
+                                fallback(R.drawable.user_avatar).
                                 into(holderComment.avatorImage);
 
                     }
@@ -610,10 +610,10 @@ public class ContentAdapter extends BaseAdapter {
                                 load(news.avatorPath).
                                 diskCacheStrategy(DiskCacheStrategy.RESULT).
                                 thumbnail(0.5f).
-                                placeholder(R.drawable.material_flat).
+                                placeholder(R.drawable.user_avatar).
                                 priority(Priority.LOW).
-                                error(R.drawable.material_flat).
-                                fallback(R.drawable.material_flat).
+                                error(R.drawable.user_avatar).
+                                fallback(R.drawable.user_avatar).
                                 into(holderHeader.avatorImageView);
 //                        Glide.with(mContext).load(news.avatorPath).into(holderHeader.avatorImageView);
                     }
@@ -633,10 +633,10 @@ public class ContentAdapter extends BaseAdapter {
                                 load(forum.avatorPath).
                                 diskCacheStrategy(DiskCacheStrategy.RESULT).
                                 thumbnail(0.5f).
-                                placeholder(R.drawable.material_flat).
+                                placeholder(R.drawable.user_avatar).
                                 priority(Priority.LOW).
-                                error(R.drawable.material_flat).
-                                fallback(R.drawable.material_flat).
+                                error(R.drawable.user_avatar).
+                                fallback(R.drawable.user_avatar).
                                 into(holderHeader.avatorImageView);
 //                        Glide.with(mContext).load(forum.avatorPath).into(holderHeader.avatorImageView);
                     }
@@ -652,10 +652,10 @@ public class ContentAdapter extends BaseAdapter {
                         load(list.get(position-1).get("value")).
                         diskCacheStrategy(DiskCacheStrategy.RESULT).
                         thumbnail(0.5f).
-                        placeholder(R.drawable.material_flat).
+                        placeholder(R.drawable.user_avatar).
                         priority(Priority.LOW).
-                        error(R.drawable.material_flat).
-                        fallback(R.drawable.material_flat).
+                        error(R.drawable.user_avatar).
+                        fallback(R.drawable.user_avatar).
                         into(holderImage.imageview);
 //                Glide.with(mContext).load(list.get(position-1).get("value")).into(holderImage.imageview);
                 break;

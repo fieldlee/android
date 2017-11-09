@@ -62,10 +62,10 @@ public class LiveHolder extends RecyclerView.ViewHolder {
                     load(live.avatorPath).
                     diskCacheStrategy(DiskCacheStrategy.RESULT).
                     thumbnail(0.5f).
-                    placeholder(R.drawable.material_flat).
+                    placeholder(R.drawable.user_avatar).
                     priority(Priority.LOW).
-                    error(R.drawable.material_flat).
-                    fallback(R.drawable.material_flat).
+                    error(R.drawable.user_avatar).
+                    fallback(R.drawable.user_avatar).
                     into(nAvatorImage);
 
         }
@@ -74,10 +74,10 @@ public class LiveHolder extends RecyclerView.ViewHolder {
                     load(live.image).
                     diskCacheStrategy(DiskCacheStrategy.RESULT).
                     thumbnail(0.5f).
-                    placeholder(R.drawable.material_flat).
+                    placeholder(R.drawable.user_avatar).
                     priority(Priority.LOW).
-                    error(R.drawable.material_flat).
-                    fallback(R.drawable.material_flat).
+                    error(R.drawable.user_avatar).
+                    fallback(R.drawable.user_avatar).
                     into(nliveImage);
 
         }else{
@@ -87,10 +87,10 @@ public class LiveHolder extends RecyclerView.ViewHolder {
                     load(imageUrl).
                     diskCacheStrategy(DiskCacheStrategy.RESULT).
                     thumbnail(0.5f).
-                    placeholder(R.drawable.material_flat).
+                    placeholder(R.drawable.user_avatar).
                     priority(Priority.LOW).
-                    error(R.drawable.material_flat).
-                    fallback(R.drawable.material_flat).
+                    error(R.drawable.user_avatar).
+                    fallback(R.drawable.user_avatar).
                     into(nliveImage);
         }
         containerView.setOnClickListener(new View.OnClickListener() {

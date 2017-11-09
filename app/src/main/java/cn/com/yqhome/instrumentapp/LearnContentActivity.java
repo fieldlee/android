@@ -58,6 +58,8 @@ public class LearnContentActivity extends AppCompatActivity {
     private boolean prepared = false;
     private boolean isCompleted = false;
     private FloatingActionButton actionButton;
+    private FloatingActionButton backButton;
+
 
     private ProgressDialog pDialog;
     private MediaPlayer mediaPlayer;
@@ -80,13 +82,13 @@ public class LearnContentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getSupportActionBar()!=null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
-            getSupportActionBar().setDisplayUseLogoEnabled(false);
-            getSupportActionBar().setTitle("返回");
-        }
+//        if (getSupportActionBar()!=null){
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//            getSupportActionBar().setDisplayShowHomeEnabled(true);
+//            getSupportActionBar().setDisplayShowTitleEnabled(true);
+//            getSupportActionBar().setDisplayUseLogoEnabled(false);
+//            getSupportActionBar().setTitle("返回");
+//        }
 //      get learn info
         if (getIntent().getSerializableExtra(BaseUtils.INTENT_LEARN) != null){
             learn = (Learn) getIntent().getSerializableExtra(BaseUtils.INTENT_LEARN);
@@ -167,6 +169,16 @@ public class LearnContentActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        backButton = (FloatingActionButton)findViewById(R.id.learn_content_backBtn);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
         playLayer = (View) findViewById(R.id.learn_content_layer);
         playLayer.setVisibility(View.GONE);
 //

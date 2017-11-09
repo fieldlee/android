@@ -10,6 +10,8 @@ import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -217,13 +219,18 @@ public class BaseUtils {
     public static Map<String,Object> getUser(Activity activity){
         Map<String,Object> objUser = new HashMap<String,Object>();
         SharedPreferences sharedData = activity.getSharedPreferences("user",Context.MODE_PRIVATE);
-        objUser.put("name",sharedData.getString("name","")) ;
-        objUser.put("id",sharedData.getString("id","")) ;
-        objUser.put("avatorImage",sharedData.getString("avatorImage","")) ;
-        objUser.put("remember",sharedData.getBoolean("remember",false));
-        objUser.put("password",sharedData.getString("password","")) ;
-        objUser.put("token",sharedData.getString("token","")) ;
-        return objUser;
+        if (sharedData != null){
+            objUser.put("name",sharedData.getString("name","")) ;
+            objUser.put("id",sharedData.getString("id","")) ;
+            objUser.put("avatorImage",sharedData.getString("avatorImage","")) ;
+            objUser.put("remember",sharedData.getBoolean("remember",false));
+            objUser.put("password",sharedData.getString("password","")) ;
+            objUser.put("token",sharedData.getString("token","")) ;
+            return objUser;
+        }
+        else{
+            return null;
+        }
     }
 
     public static void saveReqTime(Activity activity,String key,Long time){
@@ -330,7 +337,6 @@ public class BaseUtils {
         }
         return result;
     }
-
     /**
      * base64转为bitmap
      * @param base64Data
@@ -339,5 +345,28 @@ public class BaseUtils {
     public static Bitmap base64ToBitmap(String base64Data) {
         byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+
+        Bitmap bitmap = Bitmap.createBitmap(
+
+                drawable.getIntrinsicWidth(),
+
+                drawable.getIntrinsicHeight(),
+
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+
+                        : Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+
+        //canvas.setBitmap(bitmap);
+
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+
+        drawable.draw(canvas);
+
+        return bitmap;
+
     }
 }

@@ -42,7 +42,9 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".ContextActivity" />
         <activity android:name=".Fragments.Forum.WriteForumActivity" />
-        <activity android:name=".LearnContentActivity"></activity>
+        <activity android:name=".LearnContentActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            ></activity>
         <service android:name=".MusicService" />
         <activity android:name=".LiveActivity"
             android:screenOrientation="portrait"

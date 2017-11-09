@@ -25,9 +25,9 @@
             android:layout_gravity="center_vertical"
             android:id="@+id/cell_learn_avator"
             android:scaleType="fitCenter"
-            app:riv_corner_radius="15dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
+            app:riv_corner_radius="12dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
         <TextView
             android:layout_marginLeft="10dp"
             android:id="@+id/cell_learn_subtitle"

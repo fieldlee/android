@@ -146,10 +146,10 @@ public class NewsHolder extends RecyclerView.ViewHolder {
                             load(news.avatorPath).
                             diskCacheStrategy(DiskCacheStrategy.RESULT).
                             thumbnail(0.5f).
-                            placeholder(R.drawable.material_flat).
+                            placeholder(R.drawable.user_avatar).
                             priority(Priority.LOW).
-                            error(R.drawable.material_flat).
-                            fallback(R.drawable.material_flat).
+                            error(R.drawable.user_avatar).
+                            fallback(R.drawable.user_avatar).
                             into(avatorImage);
 
                 }
@@ -178,10 +178,10 @@ public class NewsHolder extends RecyclerView.ViewHolder {
                             load(news.avatorPath).
                             diskCacheStrategy(DiskCacheStrategy.RESULT).
                             thumbnail(0.5f).
-                            placeholder(R.drawable.material_flat).
+                            placeholder(R.drawable.user_avatar).
                             priority(Priority.LOW).
-                            error(R.drawable.material_flat).
-                            fallback(R.drawable.material_flat).
+                            error(R.drawable.user_avatar).
+                            fallback(R.drawable.user_avatar).
                             into(avatorImage);
 
                 }
@@ -237,10 +237,10 @@ public class NewsHolder extends RecyclerView.ViewHolder {
                             load(news.avatorPath).
                             diskCacheStrategy(DiskCacheStrategy.RESULT).
                             thumbnail(0.5f).
-                            placeholder(R.drawable.material_flat).
+                            placeholder(R.drawable.user_avatar).
                             priority(Priority.LOW).
-                            error(R.drawable.material_flat).
-                            fallback(R.drawable.material_flat).
+                            error(R.drawable.user_avatar).
+                            fallback(R.drawable.user_avatar).
                             into(navatorImage);
 
                 }
@@ -270,10 +270,10 @@ public class NewsHolder extends RecyclerView.ViewHolder {
                             load(news.avatorPath).
                             diskCacheStrategy(DiskCacheStrategy.RESULT).
                             thumbnail(0.5f).
-                            placeholder(R.drawable.material_flat).
+                            placeholder(R.drawable.user_avatar).
                             priority(Priority.LOW).
-                            error(R.drawable.material_flat).
-                            fallback(R.drawable.material_flat).
+                            error(R.drawable.user_avatar).
+                            fallback(R.drawable.user_avatar).
                             into(navatorImage);
 
                 }

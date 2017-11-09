@@ -60,6 +60,8 @@ public class WebRtcClient {
         void onRemoveRemoteStream(int endPoint);
 
         void onPresendId(String presendId);
+
+        void onReceiveMessage(JSONObject msgObj);
     }
 
     private interface Command{
@@ -114,6 +116,16 @@ public class WebRtcClient {
         }
     }
 
+    public void sendMsgMessage(String to,String toname,String room, JSONObject payload) throws JSONException {
+        JSONObject message = new JSONObject();
+        message.put("to", to);
+        message.put("name",toname);
+        message.put("type", "message");
+        message.put("room", room);
+        message.put("payload", payload);
+        client.emit("message", message);
+    }
+
     /**
      * Send a message through the signaling server
      *
@@ -158,15 +170,19 @@ public class WebRtcClient {
                     String from = data.getString("from");
                     String type = data.getString("type");
                     String name = data.getString("name");
+//                    String room = data.getString("room");
                     JSONObject payload = null;
                     if(!type.equals("init")) {
                         payload = data.getJSONObject("payload");
+                        if (payload != null){
+                            mListener.onReceiveMessage(payload);
+                        }
                     }
                     // if peer is unknown, try to add him
                     if(!peers.containsKey(from)) {
                         // if MAX_PEER is reach, ignore the call
                         int endPoint = findEndPoint();
-                        if(endPoint != MAX_PEER) {
+                        if(endPoint != MAX_PEER && !data.has("room")) {  //如果room 有值说明是鼓掌等信息
                             Peer peer = addPeer(from, name,endPoint);
                             if (isPresent){//主播添加stream 收听不添加
                                 peer.pc.addStream(localMS);
@@ -174,7 +190,9 @@ public class WebRtcClient {
                             commandMap.get(type).execute(from, payload);
                         }
                     } else {
-                        commandMap.get(type).execute(from, payload);
+                        if (!data.has("room")){ //如果room 有值说明是鼓掌等信息
+                            commandMap.get(type).execute(from, payload);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -367,10 +385,10 @@ public class WebRtcClient {
             factory.dispose();
         }
         if (client != null){
+            client.off();
             client.disconnect();
             client.close();
         }
-
     }
 
     private int findEndPoint() {
@@ -408,7 +426,7 @@ public class WebRtcClient {
     }
 
     private void setCamera(){
-        localMS = factory.createLocalMediaStream("ARDAMS");
+        localMS = factory.createLocalMediaStream("ARDAMS");//ARDAMS
         if(pcParams.videoCallEnabled){
             MediaConstraints videoConstraints = new MediaConstraints();
             videoConstraints.mandatory.add(new MediaConstraints.KeyValuePair("maxHeight", Integer.toString(pcParams.videoHeight)));
@@ -417,7 +435,7 @@ public class WebRtcClient {
             videoConstraints.mandatory.add(new MediaConstraints.KeyValuePair("minFrameRate", Integer.toString(pcParams.videoFps)));
 
             videoSource = factory.createVideoSource(getVideoCapturer(), videoConstraints);
-            localMS.addTrack(factory.createVideoTrack("ARDAMSv0", videoSource));
+            localMS.addTrack(factory.createVideoTrack("ARDAMSv0", videoSource));//ARDAMSv0
         }
 
         AudioSource audioSource = factory.createAudioSource(new MediaConstraints());

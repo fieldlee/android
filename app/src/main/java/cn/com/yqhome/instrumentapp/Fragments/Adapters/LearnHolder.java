@@ -48,7 +48,6 @@ public class LearnHolder extends RecyclerView.ViewHolder {
 
         if (type == BaseUtils.TYPE_ITEM_LEARN && obj != null){
             final Learn learn = (Learn) obj;
-//            if (viewType ==BaseUtils.CELL_LEARN_MP3){
                 nTitle.setText(learn.title);
                 nSubTitle.setText(learn.avator);
                 if (learn.authorPath != null){
@@ -63,13 +62,23 @@ public class LearnHolder extends RecyclerView.ViewHolder {
                                 load(learn.authorPath).
                                 diskCacheStrategy(DiskCacheStrategy.RESULT).
                                 thumbnail(0.5f).
-                                placeholder(R.drawable.material_flat).
+                                placeholder(R.drawable.user_avatar).
                                 priority(Priority.LOW).
-                                error(R.drawable.material_flat).
-                                fallback(R.drawable.material_flat).
+                                error(R.drawable.user_avatar).
+                                fallback(R.drawable.user_avatar).
                                 into(avatorImage);
 
                     }
+                }else{
+                    Glide.with(this.itemView.getContext()).
+                            load(learn.authorPath).
+                            diskCacheStrategy(DiskCacheStrategy.RESULT).
+                            thumbnail(0.5f).
+                            placeholder(R.drawable.user_avatar).
+                            priority(Priority.LOW).
+                            error(R.drawable.user_avatar).
+                            fallback(R.drawable.user_avatar).
+                            into(avatorImage);
                 }
 
                 containerView.setOnClickListener(new View.OnClickListener() {
