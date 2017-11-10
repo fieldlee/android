@@ -41,9 +41,18 @@
                 android:layout_marginLeft="10dp"
                 android:id="@+id/cell_no_picture_subtitle"
                 android:textSize="@dimen/news_subtitle"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                  />
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/cell_no_picture_read"
+                android:textSize="@dimen/news_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10000"
+                />
         </LinearLayout>
 
 

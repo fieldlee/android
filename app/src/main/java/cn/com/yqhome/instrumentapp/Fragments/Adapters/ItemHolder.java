@@ -89,7 +89,7 @@ public class ItemHolder extends RecyclerView.ViewHolder {
             nImageView = (ImageView)itemView.findViewById(R.id.cell_video_imageView);
             nVideoTime = (TextView) itemView.findViewById(R.id.cell_video_time);
             navatorImage = (ImageView) itemView.findViewById(R.id.cell_video_avator);
-            nVideoBtnImage =  (ImageView) itemView.findViewById(R.id.cell_video_btn);
+//            nVideoBtnImage =  (ImageView) itemView.findViewById(R.id.cell_video_btn);
         }
 
         if (type == BaseUtils.CELL_VIDEO_BIG_PICTURE){

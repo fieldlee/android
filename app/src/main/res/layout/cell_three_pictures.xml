@@ -64,7 +64,17 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:id="@+id/cell_three_subtitle"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/news_subtitle"
+                />
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/cell_three_read"
+                android:text="1000"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/news_subtitle"
                 />
